@@ -1,5 +1,10 @@
 package com.vach.cafe.util;
 
+import java.util.concurrent.TimeUnit;
+
+import static com.vach.cafe.util.Validator.allNotNull;
+import static com.vach.cafe.util.Validator.notNullOrEmpty;
+
 public class Util {
   // wtf exceptions must never happen
 
@@ -21,6 +26,27 @@ public class Util {
 
   public static <T> T wtf(Throwable exception, String message) {
     throw new IllegalStateException(message, exception);
+  }
+
+  // concurrency
+
+  public static void bearSleep(long millis) {
+    try {
+      TimeUnit.MILLISECONDS.sleep(millis);
+    } catch (InterruptedException ignored) {
+    }
+  }
+
+  // printing
+
+  public static void log(String msg) {
+    assert notNullOrEmpty(msg);
+    System.out.printf("%s : %s\n", Thread.currentThread().getName(), msg);
+  }
+
+  public static void logf(String format, Object... args) {
+    assert notNullOrEmpty(format) && allNotNull(args);
+    System.out.printf("%s : %s\n", Thread.currentThread().getName(), String.format(format, args));
   }
 
 }
