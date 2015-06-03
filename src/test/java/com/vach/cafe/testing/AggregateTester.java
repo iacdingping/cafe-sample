@@ -1,4 +1,4 @@
-package com.vach.cafe.test;
+package com.vach.cafe.testing;
 
 import com.vach.cafe.Aggregate;
 import com.vach.cafe.Command;

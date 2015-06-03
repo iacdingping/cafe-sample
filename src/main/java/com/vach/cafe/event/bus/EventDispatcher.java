@@ -32,6 +32,7 @@ public class EventDispatcher implements Dispatcher<Event> {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public void dispatch(Event event) {
     trace("dispatching event : %s", event);
 
@@ -40,8 +41,12 @@ public class EventDispatcher implements Dispatcher<Event> {
     if (handler == null) {
       wtf("no handler is registered for type : %s", event.getClass());
     }
-
-    // TODO implement ACK/NCK response
     handler.on(event);
+  }
+
+  @Override
+  public void dispatch(List<Event> elementBatch) {
+    // TODO implement batch event processing
+    wtf();
   }
 }

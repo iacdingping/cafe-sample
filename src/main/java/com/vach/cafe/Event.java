@@ -1,14 +1,24 @@
 package com.vach.cafe;
 
-public abstract class Event extends Message {
+public abstract class Event implements Message {
 
-  /**
-   * Id of the aggregate the change was applied to.
-   */
-  public long id;
+  protected long aggregateId;
+  protected String type;
+  protected long timestamp;
 
-  public Event(long id){
-    super(System.nanoTime());
-    this.id = id;
+  protected Event(){}
+
+  public Event(long aggregateId, String type) {
+    this.aggregateId = aggregateId;
+    this.timestamp = System.currentTimeMillis();
+    this.type = type;
+  }
+
+  public long timestamp() {
+    return timestamp;
+  }
+
+  public String type() {
+    return type;
   }
 }

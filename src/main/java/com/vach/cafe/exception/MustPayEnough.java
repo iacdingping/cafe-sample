@@ -1,5 +1,5 @@
 package com.vach.cafe.exception;
 
-public class MustPayEnough extends Throwable {
+public class MustPayEnough extends Exception {
 
 }

@@ -4,13 +4,15 @@ import com.google.common.base.Objects;
 
 import com.vach.cafe.Command;
 
+import static com.vach.cafe.encoder.TypeRegister.COMMAND_OPEN_TAB;
+
 public class OpenTab extends Command {
 
   public int tableNumber;
   public String waiter;
 
   public OpenTab(long id, int tableNumber, String waiter) {
-    super(id);
+    super(id, COMMAND_OPEN_TAB);
     this.tableNumber = tableNumber;
     this.waiter = waiter;
   }
@@ -29,20 +31,20 @@ public class OpenTab extends Command {
 
     return Objects.equal(this.tableNumber, that.tableNumber) &&
            Objects.equal(this.waiter, that.waiter) &&
-           Objects.equal(this.id, that.id) &&
+           Objects.equal(this.aggregateId, that.aggregateId) &&
            Objects.equal(this.timestamp, that.timestamp);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(tableNumber, waiter, id, timestamp);
+    return Objects.hashCode(tableNumber, waiter, aggregateId, timestamp);
   }
 
   @Override
   public String toString() {
     return String.format(
-        "openTab { id : %s, tableNumber : %d, waiter : %s}",
-        id,
+        "openTab { aggregateId : %s, tableNumber : %d, waiter : %s}",
+        aggregateId,
         tableNumber,
         waiter
     );

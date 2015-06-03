@@ -1,4 +1,4 @@
-package com.vach.cafe;
+package com.vach.cafe.util;
 
 import org.junit.Test;
 
@@ -25,6 +25,16 @@ public class CallbackRegisterTest {
     new Thread(()->{
       bearSleep(2000);
       register.success("Yay!");
+    }).start();
+
+    register
+        .onSuccess(result -> log("SUCCESS!!!"))
+        .onFailure(cause -> log("FAILURE"))
+        .waitForResult();
+
+    new Thread(()->{
+      bearSleep(2000);
+      register.success();
     }).start();
 
     register

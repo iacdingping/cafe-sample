@@ -1,5 +1,5 @@
 package com.vach.cafe.exception;
 
-public class CannotCancelServedItem extends Throwable {
+public class CannotCancelServedItem extends Exception {
 
 }

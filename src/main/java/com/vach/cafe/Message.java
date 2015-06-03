@@ -1,14 +1,9 @@
 package com.vach.cafe;
 
-public abstract class Message {
+public interface Message {
 
-  /**
-   * Timestamp of event creation in nanoseconds
-   */
-  public long timestamp;
+  long timestamp();
 
-  public Message(long timestamp) {
-    this.timestamp = timestamp;
-  }
+  String type();
 
 }

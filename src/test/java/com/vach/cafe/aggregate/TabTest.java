@@ -2,7 +2,7 @@ package com.vach.cafe.aggregate;
 
 
 import com.vach.cafe.aggregate.tab.Tab;
-import com.vach.cafe.test.AggregateTester;
+import com.vach.cafe.testing.AggregateTester;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

@@ -2,13 +2,15 @@ package com.vach.cafe.event;
 
 import com.vach.cafe.Event;
 
+import static com.vach.cafe.encoder.TypeRegister.EVENT_TAB_OPENED;
+
 public class TabOpened extends Event {
 
   public int tableNumber;
   public String waiter;
 
   public TabOpened(long id, int tableNumber, String waiter) {
-    super(id);
+    super(id, EVENT_TAB_OPENED);
     this.tableNumber = tableNumber;
     this.waiter = waiter;
   }
@@ -16,8 +18,8 @@ public class TabOpened extends Event {
   @Override
   public String toString() {
     return String.format(
-        "tabOpened { id : %s, tableNumber : %d, waiter : %s }",
-        id,
+        "tabOpened { aggregateId : %s, tableNumber : %d, waiter : %s }",
+        aggregateId,
         tableNumber,
         waiter
     );
