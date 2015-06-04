@@ -8,7 +8,7 @@ public abstract class Command implements Message {
   protected String type;
   protected long timestamp;
 
-  private final CallbackRegister callbackRegister = new CallbackRegister();
+  private transient final CallbackRegister callbackRegister = new CallbackRegister();
 
   protected Command(){}
 

@@ -17,36 +17,23 @@ public class OpenTab extends Command {
     this.waiter = waiter;
   }
 
-
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
+    if (this == o)
       return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
+    if (o == null || getClass() != o.getClass())
       return false;
-    }
 
     OpenTab that = (OpenTab) o;
 
     return Objects.equal(this.tableNumber, that.tableNumber) &&
            Objects.equal(this.waiter, that.waiter) &&
            Objects.equal(this.aggregateId, that.aggregateId) &&
-           Objects.equal(this.timestamp, that.timestamp);
+           Objects.equal(this.type, that.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(tableNumber, waiter, aggregateId, timestamp);
-  }
-
-  @Override
-  public String toString() {
-    return String.format(
-        "openTab { aggregateId : %s, tableNumber : %d, waiter : %s}",
-        aggregateId,
-        tableNumber,
-        waiter
-    );
+    return Objects.hashCode(tableNumber, waiter, aggregateId, type);
   }
 }

@@ -37,6 +37,17 @@ public class Util {
     }
   }
 
+  // unchecked cast
+
+  @SuppressWarnings("unchecked")
+  public static <T> T cast(Object object) {
+    try {
+      return (T) object;
+    } catch (ClassCastException e) {
+      throw new IllegalStateException("unexpected cast", e);
+    }
+  }
+
   // printing
 
   public static void log(String msg) {

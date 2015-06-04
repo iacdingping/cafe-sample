@@ -47,6 +47,6 @@ public class EventDispatcher implements Dispatcher<Event> {
   @Override
   public void dispatch(List<Event> elementBatch) {
     // TODO implement batch event processing
-    wtf();
+    elementBatch.forEach(this::dispatch);
   }
 }
