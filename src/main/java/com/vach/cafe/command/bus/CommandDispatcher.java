@@ -5,7 +5,6 @@ import com.vach.cafe.CommandHandler;
 import com.vach.cafe.Dispatcher;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,6 @@ import static com.vach.cafe.util.Util.wtf;
 /**
  * CommandDispatcher does not execute any business logic itself, instead it delegates command to appropriate handler.
  */
-@Component
 public class CommandDispatcher implements Dispatcher<Command> {
 
   private Map<Class, CommandHandler> handlers = new HashMap<>();
@@ -46,11 +44,5 @@ public class CommandDispatcher implements Dispatcher<Command> {
     handler.on(command);
   }
 
-
-  @Override
-  public void dispatch(List<Command> commands) {
-
-    // TODO implement batch processing logic
-    commands.forEach(this::dispatch);
-  }
+  // TODO implement batch command processing
 }

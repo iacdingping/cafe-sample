@@ -1,5 +1,6 @@
 package com.vach.cafe.util;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.vach.cafe.util.Validator.allNotNull;
@@ -58,6 +59,12 @@ public class Util {
   public static void logf(String format, Object... args) {
     assert notNullOrEmpty(format) && allNotNull(args);
     System.out.printf("%s : %s\n", Thread.currentThread().getName(), String.format(format, args));
+  }
+
+  // other
+
+  public static <T> T[] asArray(List<T> elements) {
+    return cast(elements.toArray());
   }
 
 }

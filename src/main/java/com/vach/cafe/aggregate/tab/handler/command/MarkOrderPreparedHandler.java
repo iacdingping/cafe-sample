@@ -16,5 +16,7 @@ public class MarkOrderPreparedHandler implements CommandHandler<MarkOrderPrepare
   @Override
   public void on(MarkOrderPrepared command) {
     info("handling : %s", command);
+
+    command.progress().success();
   }
 }

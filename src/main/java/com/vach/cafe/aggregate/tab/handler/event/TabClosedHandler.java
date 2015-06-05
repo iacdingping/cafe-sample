@@ -6,7 +6,7 @@ import com.vach.cafe.event.TabClosed;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TabClosedHandler implements EventHandler<TabClosed>{
+public class TabClosedHandler implements EventHandler<TabClosed> {
 
   @Override
   public Class<TabClosed> type() {

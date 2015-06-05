@@ -13,13 +13,16 @@ public abstract class Aggregate {
   protected long id;
   protected String type;
   protected int version;
+
   protected List<Event> changes;
   private HashMap<Class, Consumer> handlers = new HashMap<>();
+  private Bus<Event> eventBus;
 
   // interface
 
-  public Aggregate(String type) {
+  public Aggregate(String type, Bus<Event> eventBus) {
     this.type = type;
+    this.eventBus = eventBus;
   }
 
   /**
@@ -77,11 +80,13 @@ public abstract class Aggregate {
         type,
         handler
             // add additional logic to handlers
-            .andThen((e) -> {
+            .andThen((event) -> {
               // add event to changes
-              this.changes.add(e);
+              this.changes.add(event);
               // increment the version
               this.version++;
+              // emit event to all subscribers
+              eventBus.publish(event);
             })
     );
   }
@@ -93,7 +98,7 @@ public abstract class Aggregate {
     Consumer handler = handlers.get(event.getClass());
 
     if (handler == null) {
-      wtf("no handler registered for : " + event.getClass());
+      wtf("aggregate does not support events of type : " + event.getClass());
     }
 
     try {

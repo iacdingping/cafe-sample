@@ -16,5 +16,7 @@ public class AmendOrderHandler implements CommandHandler<AmendOrder> {
   @Override
   public void on(AmendOrder command) {
     info("handling : %s", command);
+
+    command.progress().success();
   }
 }

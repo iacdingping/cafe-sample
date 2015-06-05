@@ -1,19 +1,25 @@
 package com.vach.cafe.aggregate.tab.repo;
 
 import com.vach.cafe.Repository;
-import com.vach.cafe.util.ICanLog;
 import com.vach.cafe.aggregate.tab.Tab;
+import com.vach.cafe.util.ICanLog;
 
 import gnu.trove.map.hash.TLongObjectHashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.lang.ref.SoftReference;
 
 import static com.vach.cafe.util.Util.wtf;
 
-public class TabRepo implements Repository<Tab>, ICanLog{
+public class TabRepo implements Repository<Tab>, ICanLog {
+
+  @Autowired
+  ApplicationContext context;
 
   private TLongObjectHashMap<Tab> map = new TLongObjectHashMap<>();
-  private TLongObjectHashMap<SoftReference<Tab>> cache = new TLongObjectHashMap<>();;
+  private TLongObjectHashMap<SoftReference<Tab>> cache = new TLongObjectHashMap<>();
 
   @Override
   public Tab get(long id) {
@@ -22,13 +28,18 @@ public class TabRepo implements Repository<Tab>, ICanLog{
     Tab aggregate = map.get(id);
 
     // if not in memory try the cache
-    if(aggregate == null){
+    if (aggregate == null) {
       aggregate = getFromCache(id);
     }
 
     // if not in memory get from event store
-    if(aggregate == null){
+    if (aggregate == null) {
       aggregate = getFromEventStore(id);
+    }
+
+    // create if does not exist
+    if (aggregate == null) {
+      aggregate = context.getBean(Tab.class);
     }
 
     return aggregate;
@@ -42,16 +53,15 @@ public class TabRepo implements Repository<Tab>, ICanLog{
   }
 
   /**
-   * Tries to get value from SoftReference cache,
-   * if value exists its moved to regular repo.
+   * Tries to get value from SoftReference cache, if value exists its moved to regular repo.
    */
   private Tab getFromCache(long id) {
     SoftReference<Tab> reference = cache.remove(id);
 
-    if(reference != null) {
+    if (reference != null) {
       Tab aggregate = reference.get();
 
-      if(aggregate != null){
+      if (aggregate != null) {
         trace("got aggregate from cache : %s", id);
         map.put(id, aggregate);
         return aggregate;
@@ -62,7 +72,7 @@ public class TabRepo implements Repository<Tab>, ICanLog{
   }
 
   /**
-   *  Rebuild aggregate from event store.
+   * Rebuild aggregate from event store.
    */
   private Tab getFromEventStore(long id) {
     // replay events from event store

@@ -16,5 +16,7 @@ public class MarkOrderServedHandler implements CommandHandler<MarkOrderServed> {
   @Override
   public void on(MarkOrderServed command) {
     info("handling : %s", command);
+
+    command.progress().success();
   }
 }

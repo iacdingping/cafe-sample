@@ -6,7 +6,7 @@ import com.vach.cafe.event.FoodCanceled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FoodCanceledHandler implements EventHandler<FoodCanceled>{
+public class FoodCanceledHandler implements EventHandler<FoodCanceled> {
 
   @Override
   public Class<FoodCanceled> type() {

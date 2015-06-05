@@ -4,9 +4,11 @@ import com.vach.cafe.util.ICanLog;
 
 import java.util.List;
 
-public interface Dispatcher<T> extends ICanLog{
+public interface Dispatcher<T> extends ICanLog {
 
   void dispatch(T element);
 
-  void dispatch(List<T> elementBatch);
+  default void dispatch(List<T> elementBatch) {
+    elementBatch.forEach(this::dispatch);
+  }
 }

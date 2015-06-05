@@ -6,10 +6,10 @@ import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.vach.cafe.Bus;
+import com.vach.cafe.Dispatcher;
 import com.vach.cafe.Event;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,6 @@ import java.util.concurrent.Executors;
 
 import static com.vach.cafe.util.Util.wtf;
 
-@Component
 public class EventBus implements Bus<Event> {
 
   private final Disruptor<EventHolder> disruptor;
@@ -28,7 +27,7 @@ public class EventBus implements Bus<Event> {
   };
 
   @Autowired
-  public EventBus(EventDispatcher dispatcher){
+  public EventBus(Dispatcher<Event> dispatcher) {
     disruptor = new Disruptor<>(
         EventHolder::new,
         1024,
@@ -51,10 +50,11 @@ public class EventBus implements Bus<Event> {
    * Adapter for Dispatcher
    */
   private class EventDelegate implements EventHandler<EventHolder> {
-    private final EventDispatcher dispatcher;
+
+    private final Dispatcher<Event> dispatcher;
     private final List<Event> batch = new ArrayList<>();
 
-    public EventDelegate(EventDispatcher dispatcher){
+    public EventDelegate(Dispatcher<Event> dispatcher) {
       this.dispatcher = dispatcher;
     }
 
@@ -78,6 +78,7 @@ public class EventBus implements Bus<Event> {
    * Single cell of data in ring buffer
    */
   private class EventHolder {
+
     public String type;
     //  public byte[] data;
     // TODO serialization of events

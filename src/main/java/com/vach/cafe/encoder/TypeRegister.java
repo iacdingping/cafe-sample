@@ -1,6 +1,7 @@
 package com.vach.cafe.encoder;
 
 public class TypeRegister {
+
   public static final String COMMAND_AMEND_ORDER = "amendOrder";
   public static final String COMMAND_CLOSE_TAB = "closeTab";
   public static final String COMMAND_MARK_ORDER_PREPARED = "markOrderPrepared";

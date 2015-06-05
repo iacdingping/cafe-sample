@@ -6,7 +6,7 @@ import static com.vach.cafe.util.Util.wtf;
 
 public class Marshaller {
 
-  public static byte[] marshal(Message message){
+  public static byte[] marshal(Message message) {
     return wtf(); // TODO implement marshaller
   }
 

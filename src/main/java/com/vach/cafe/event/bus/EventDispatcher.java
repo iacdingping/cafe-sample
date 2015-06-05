@@ -5,7 +5,6 @@ import com.vach.cafe.Event;
 import com.vach.cafe.EventHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,6 @@ import static com.vach.cafe.util.Util.wtf;
 /**
  * EventDispatcher does not execute any business logic itself, instead it delegates event to appropriate handler.
  */
-@Component
 public class EventDispatcher implements Dispatcher<Event> {
 
   private Map<Class, EventHandler> handlers = new HashMap<>();
@@ -44,9 +42,5 @@ public class EventDispatcher implements Dispatcher<Event> {
     handler.on(event);
   }
 
-  @Override
-  public void dispatch(List<Event> elementBatch) {
-    // TODO implement batch event processing
-    elementBatch.forEach(this::dispatch);
-  }
+  // TODO implement batch event processing
 }

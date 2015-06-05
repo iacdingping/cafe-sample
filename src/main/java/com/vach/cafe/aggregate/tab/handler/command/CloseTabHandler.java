@@ -16,5 +16,7 @@ public class CloseTabHandler implements CommandHandler<CloseTab> {
   @Override
   public void on(CloseTab command) {
     info("handling : %s", command);
+
+    command.progress().success();
   }
 }

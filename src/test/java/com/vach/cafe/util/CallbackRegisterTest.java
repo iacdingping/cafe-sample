@@ -18,7 +18,6 @@ public class CallbackRegisterTest {
     }).start();
 
     register
-        .onSuccess(result -> log("SUCCESS!!!"))
         .onFailure(cause -> log("FAILURE"))
         .waitForResult();
 

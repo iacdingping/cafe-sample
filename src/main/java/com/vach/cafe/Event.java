@@ -6,12 +6,17 @@ public abstract class Event implements Message {
   protected String type;
   protected long timestamp;
 
-  protected Event(){}
+  protected Event() {
+  }
 
   public Event(long aggregateId, String type) {
     this.aggregateId = aggregateId;
     this.timestamp = System.currentTimeMillis();
     this.type = type;
+  }
+
+  public long aggregateId() {
+    return aggregateId;
   }
 
   public long timestamp() {

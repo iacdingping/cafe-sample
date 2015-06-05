@@ -8,9 +8,10 @@ public abstract class Command implements Message {
   protected String type;
   protected long timestamp;
 
-  private transient final CallbackRegister callbackRegister = new CallbackRegister();
+  CallbackRegister callbackRegister;
 
-  protected Command(){}
+  protected Command() {
+  }
 
   public Command(long aggregateId, String type) {
     this.aggregateId = aggregateId;
@@ -18,8 +19,15 @@ public abstract class Command implements Message {
     this.type = type;
   }
 
-  public CallbackRegister whenCompleted() {
+  public CallbackRegister progress() {
+    if (callbackRegister == null) {
+      callbackRegister = new CallbackRegister();
+    }
     return this.callbackRegister;
+  }
+
+  public long aggregateId() {
+    return aggregateId;
   }
 
   public long timestamp() {
@@ -29,4 +37,6 @@ public abstract class Command implements Message {
   public String type() {
     return type;
   }
+
+
 }

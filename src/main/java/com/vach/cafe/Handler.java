@@ -2,7 +2,7 @@ package com.vach.cafe;
 
 import com.vach.cafe.util.ICanLog;
 
-public interface Handler<T> extends ICanLog{
+public interface Handler<T> extends ICanLog {
 
   /**
    * Acceptable Message type

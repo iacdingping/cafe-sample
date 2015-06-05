@@ -7,9 +7,9 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.vach.cafe.Bus;
 import com.vach.cafe.Command;
+import com.vach.cafe.Dispatcher;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +17,7 @@ import java.util.concurrent.Executors;
 
 import static com.vach.cafe.util.Util.wtf;
 
-
-@Component
-public class CommandBus implements Bus<Command>{
+public class CommandBus implements Bus<Command> {
 
   private final Disruptor<CommandHolder> disruptor;
 
@@ -29,7 +27,7 @@ public class CommandBus implements Bus<Command>{
   };
 
   @Autowired
-  public CommandBus(CommandDispatcher dispatcher){
+  public CommandBus(Dispatcher<Command> dispatcher) {
     disruptor = new Disruptor<>(
         CommandHolder::new,
         1024,
@@ -52,10 +50,11 @@ public class CommandBus implements Bus<Command>{
    * Adapter for Dispatcher
    */
   private class CommandDelegate implements EventHandler<CommandHolder> {
-    private final CommandDispatcher dispatcher;
+
+    private final Dispatcher<Command> dispatcher;
     private final List<Command> batch = new ArrayList<>();
 
-    public CommandDelegate(CommandDispatcher dispatcher){
+    public CommandDelegate(Dispatcher<Command> dispatcher) {
       this.dispatcher = dispatcher;
     }
 
@@ -79,6 +78,7 @@ public class CommandBus implements Bus<Command>{
    * Single cell of data in ring buffer
    */
   private class CommandHolder {
+
     public String type;
     //  public byte[] data; // Serialized Command (which when parsed will create Command instance)
     // TODO serialization of commands

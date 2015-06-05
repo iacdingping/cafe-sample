@@ -16,5 +16,7 @@ public class PlaceOrderHandler implements CommandHandler<PlaceOrder> {
   @Override
   public void on(PlaceOrder command) {
     info("handling : %s", command);
+
+    command.progress().success();
   }
 }

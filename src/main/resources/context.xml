@@ -9,6 +9,8 @@
 
     <context:annotation-config/>
 
+    <!-- GLOBAL COMPONENTS -->
+
     <!-- message buses-->
     <bean class="com.vach.cafe.command.bus.CommandBus"/>
     <bean class="com.vach.cafe.event.bus.EventBus"/>
@@ -17,16 +19,13 @@
     <bean class="com.vach.cafe.command.bus.CommandDispatcher"/>
     <bean class="com.vach.cafe.event.bus.EventDispatcher"/>
 
-    <!-- tab command handlers -->
-    <context:component-scan base-package="com.vach.cafe.aggregate.tab.handler.command"/>
 
-    <!-- tab event handlers -->
+    <!-- TAB AGGREGATE COMPONENTS -->
+
+    <bean class="com.vach.cafe.aggregate.tab.Tab" scope="prototype"/>
+    <bean class="com.vach.cafe.aggregate.tab.repo.TabRepo"/>
+    <context:component-scan base-package="com.vach.cafe.aggregate.tab.handler.command"/>
     <context:component-scan base-package="com.vach.cafe.aggregate.tab.handler.event"/>
 
-    <!-- tab repository -->
-    <bean class="com.vach.cafe.aggregate.tab.repo.TabRepo"/>
-
-
-    <!--<context:component-scan base-package="com.vach.cafe"/>-->
 
 </beans>

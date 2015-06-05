@@ -3,11 +3,12 @@ package com.vach.cafe.util;
 import static com.vach.cafe.util.Util.log;
 
 /**
- * Reusable callback holder for single producer to subscribe for completion.
- * After completion it automatically resets to blank state.
+ * Reusable callback holder for single producer to subscribe for completion. After completion it automatically resets to blank state.
  *
- * When a Command is published by producer, it will be completed by handler using CallbackRegister
- * which will continue execution of callback on producer thread (thus not blocking handlers).
+ * When a Command is published by producer, it will be completed by handler using CallbackRegister which will continue execution of
+ * callback on producer thread (thus not blocking handlers).
+ *
+ * TODO improve and support multiple callbacks
  */
 public class CallbackRegister {
 
@@ -40,7 +41,8 @@ public class CallbackRegister {
   }
 
   /**
-   * Puts thread in WAIT state till command is explicitly completed trough either success(..) or fail(..)
+   * Puts thread in WAIT state till command is explicitly completed trough either success(..) or fail(..) IMPORTANT : all command
+   * handlers shall complete command.
    */
   public synchronized void waitForResult() {
 
@@ -54,11 +56,19 @@ public class CallbackRegister {
       }
 
       if (isSuccess) {
-        log("executing on success");
-        onSuccess.run(result);
+        if (onSuccess != null) {
+          log("executing on success");
+          onSuccess.run(result);
+        } else {
+          log("onSuccess not specified");
+        }
       } else {
-        log("executing on failure");
-        onFailure.run(cause);
+        if (onFailure != null) {
+          log("executing on failure");
+          onFailure.run(cause);
+        } else {
+          log("onFailure not specified");
+        }
       }
 
     } catch (InterruptedException e) {
@@ -93,7 +103,7 @@ public class CallbackRegister {
   /**
    * Complete with success
    */
-  public synchronized void success(){
+  public synchronized void success() {
     // if no one is waiting for response
     if (!someoneIsWaiting) {
       // ignore the call
@@ -141,16 +151,17 @@ public class CallbackRegister {
 
     someoneIsWaiting = false;
   }
+
+  @FunctionalInterface
+  public interface SuccessCallback {
+
+    void run(Object result);
+  }
+
+  @FunctionalInterface
+  public interface FailureCallback {
+
+    void run(Exception cause);
+  }
 }
 
-@FunctionalInterface
-interface SuccessCallback {
-
-  void run(Object result);
-}
-
-@FunctionalInterface
-interface FailureCallback {
-
-  void run(Exception cause);
-}
