@@ -32,10 +32,10 @@ public class TabRepo implements Repository<Tab>, ICanLog {
       aggregate = getFromCache(id);
     }
 
-    // if not in memory get from event store
-    if (aggregate == null) {
-      aggregate = getFromEventStore(id);
-    }
+//    // if not in memory get from event store
+//    if (aggregate == null) {
+//      aggregate = getFromEventStore(id);
+//    }
 
     // create if does not exist
     if (aggregate == null) {
@@ -76,6 +76,9 @@ public class TabRepo implements Repository<Tab>, ICanLog {
    */
   private Tab getFromEventStore(long id) {
     // replay events from event store
+
+    // TODO Implement EventStorage
+
     wtf("not implemented yet");
 
     trace("got aggregate from event store : %s", id);

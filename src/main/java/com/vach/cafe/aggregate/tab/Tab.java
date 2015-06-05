@@ -31,6 +31,7 @@ public class Tab extends Aggregate {
   }
 
   private void apply(TabOpened event) {
+    this.id = event.aggregateId();
     this.tableNumber = event.tableNumber;
     this.waiter = event.waiter;
   }

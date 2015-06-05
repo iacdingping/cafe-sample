@@ -1,6 +1,7 @@
 package com.vach.cafe;
 
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ public abstract class Aggregate {
   protected String type;
   protected int version;
 
-  protected List<Event> changes;
+  protected List<Event> changes = new ArrayList<>();
   private HashMap<Class, Consumer> handlers = new HashMap<>();
   private Bus<Event> eventBus;
 

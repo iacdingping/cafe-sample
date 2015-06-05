@@ -4,6 +4,7 @@ import com.vach.cafe.CommandHandler;
 import com.vach.cafe.Repository;
 import com.vach.cafe.aggregate.tab.Tab;
 import com.vach.cafe.command.OpenTab;
+import com.vach.cafe.event.TabOpened;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,13 @@ public class OpenTabHandler implements CommandHandler<OpenTab> {
 
     Tab tab = repo.get(command.aggregateId());
 
-    tab.open(command);
+    tab.apply(
+        new TabOpened(
+            command.aggregateId(),
+            command.tableNumber,
+            command.waiter
+        )
+    );
 
     command.progress().success();
   }

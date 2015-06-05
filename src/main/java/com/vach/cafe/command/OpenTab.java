@@ -38,4 +38,15 @@ public class OpenTab extends Command {
   public int hashCode() {
     return Objects.hashCode(tableNumber, waiter, aggregateId, type);
   }
+
+  @Override
+  public String toString() {
+    return String.format(
+        "openTab { id : '%d', type : '%s', tableNumber : '%d', waiter : '%s'}",
+        aggregateId,
+        type,
+        tableNumber,
+        waiter
+    );
+  }
 }

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.vach.cafe.util.Util.asArray;
 import static org.junit.Assert.assertArrayEquals;
 
 @Component
@@ -58,7 +57,7 @@ public class AggregateTester<A extends Aggregate> implements ICanLog{
     }
 
     emittedEvents = eventDispatcher.events();
-    thrownExceptions = asArray(exceptions);
+    thrownExceptions = exceptions.toArray(new Exception[exceptions.size()]);
 
     return this;
   }

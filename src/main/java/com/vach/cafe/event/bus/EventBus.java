@@ -43,7 +43,6 @@ public class EventBus implements Bus<Event> {
   @Override
   public void publish(Event command) {
     disruptor.publishEvent(commandToEventHolderTranslator, command);
-    wtf();
   }
 
   /**

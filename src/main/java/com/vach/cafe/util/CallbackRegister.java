@@ -1,7 +1,5 @@
 package com.vach.cafe.util;
 
-import static com.vach.cafe.util.Util.log;
-
 /**
  * Reusable callback holder for single producer to subscribe for completion. After completion it automatically resets to blank state.
  *
@@ -10,7 +8,7 @@ import static com.vach.cafe.util.Util.log;
  *
  * TODO improve and support multiple callbacks
  */
-public class CallbackRegister {
+public class CallbackRegister implements ICanLog{
 
   private boolean completed;
   private boolean isSuccess;
@@ -26,7 +24,7 @@ public class CallbackRegister {
    * Callback to be executed if command succeeds
    */
   public CallbackRegister onSuccess(SuccessCallback callable) {
-    log("registering success callback");
+    info("registering success callback");
     this.onSuccess = callable;
     return this;
   }
@@ -35,7 +33,7 @@ public class CallbackRegister {
    * Callback to be executed if command fails
    */
   public CallbackRegister onFailure(FailureCallback callable) {
-    log("registering fail callback");
+    info("registering fail callback");
     onFailure = callable;
     return this;
   }
@@ -50,29 +48,29 @@ public class CallbackRegister {
 
       // wait for completion
       while (!completed) {
-        log("waiting for notification");
+        info("waiting for notification");
         someoneIsWaiting = true;
         this.wait();
       }
 
       if (isSuccess) {
         if (onSuccess != null) {
-          log("executing on success");
+          info("executing on success");
           onSuccess.run(result);
         } else {
-          log("onSuccess not specified");
+          info("onSuccess not specified");
         }
       } else {
         if (onFailure != null) {
-          log("executing on failure");
+          info("executing on failure");
           onFailure.run(cause);
         } else {
-          log("onFailure not specified");
+          info("onFailure not specified");
         }
       }
 
     } catch (InterruptedException e) {
-      log("got interrupted");
+      info("got interrupted");
       onFailure.run(e);
     }
 
@@ -89,11 +87,11 @@ public class CallbackRegister {
     // if no one is waiting for response
     if (!someoneIsWaiting) {
       // ignore the call
-      log("ignoring the call");
+      info("ignoring the call");
       return;
     }
 
-    log("completing with success");
+    info("completing with success");
     this.completed = true;
     this.isSuccess = true;
     this.result = result;
@@ -107,11 +105,11 @@ public class CallbackRegister {
     // if no one is waiting for response
     if (!someoneIsWaiting) {
       // ignore the call
-      log("ignoring the call");
+      info("ignoring the call");
       return;
     }
 
-    log("completing with success");
+    info("completing with success");
     this.completed = true;
     this.isSuccess = true;
     this.notify();
@@ -127,11 +125,11 @@ public class CallbackRegister {
     // if no one is waiting for response
     if (!someoneIsWaiting) {
       // ignore the call
-      log("ignoring the call");
+      info("ignoring the call");
       return;
     }
 
-    log("completing with failure");
+    info("completing with failure");
     this.completed = true;
     this.isSuccess = false;
     this.cause = cause;
@@ -139,7 +137,7 @@ public class CallbackRegister {
   }
 
   private void reset() {
-    log("resetting the state");
+    info("resetting the state");
     completed = false;
     isSuccess = false;
 

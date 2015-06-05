@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.vach.cafe.util.Util.asArray;
-
 /**
  * TestEventDispatcher will collect all events and store them,
  * instead of dispatching to event handlers for unit testing purposes.
@@ -24,6 +22,6 @@ public class TestEventDispatcher implements Dispatcher<Event>{
   }
 
   public Event[] events(){
-    return asArray(events);
+    return events.toArray(new Event[events.size()]);
   }
 }
