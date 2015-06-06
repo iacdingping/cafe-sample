@@ -12,20 +12,18 @@
     <!-- GLOBAL COMPONENTS -->
 
     <!-- message buses-->
-    <bean class="com.vach.cafe.command.bus.CommandBus"/>
-    <bean class="com.vach.cafe.event.bus.EventBus"/>
+    <!--<bean class="com.vach.cafe.command.bus.CommandBus"/>-->
+    <!--<bean class="com.vach.cafe.event.bus.EventBus"/>-->
 
-    <!-- dispatchers -->
-    <bean class="com.vach.cafe.command.bus.CommandDispatcher"/>
-    <bean class="com.vach.cafe.event.bus.EventDispatcher"/>
+    <!--&lt;!&ndash; dispatchers &ndash;&gt;-->
+    <!--<bean class="com.vach.cafe.command.bus.CommandDispatcher"/>-->
+    <!--<bean class="com.vach.cafe.event.bus.EventDispatcher"/>-->
 
 
-    <!-- TAB AGGREGATE COMPONENTS -->
+    <!--&lt;!&ndash; TAB AGGREGATE COMPONENTS &ndash;&gt;-->
 
-    <bean class="com.vach.cafe.aggregate.tab.Tab" scope="prototype"/>
-    <bean class="com.vach.cafe.aggregate.tab.repo.TabRepo"/>
-    <context:component-scan base-package="com.vach.cafe.aggregate.tab.handler.command"/>
-    <context:component-scan base-package="com.vach.cafe.aggregate.tab.handler.event"/>
+    <!--<bean class="com.vach.cafe.aggregate.tab.Tab" scope="prototype"/>-->
+    <!--<bean class="com.vach.cafe.aggregate.tab.repo.TabRepo"/>-->
 
 
 </beans>

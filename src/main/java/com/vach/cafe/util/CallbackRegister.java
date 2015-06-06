@@ -85,6 +85,7 @@ public class CallbackRegister implements ICanLog {
   public synchronized void success(Object... result) {
     // if a thread is waiting for a response
     if (someoneIsWaiting) {
+      debug("notifying waiting thread");
       this.completed = true;
       this.isSuccess = true;
       this.result = result;
@@ -93,6 +94,7 @@ public class CallbackRegister implements ICanLog {
 
     // if callback is specified
     else if (onSuccess != null) {
+      debug("executing without notify");
       onSuccess.run(result);
       reset();
     }
@@ -109,6 +111,7 @@ public class CallbackRegister implements ICanLog {
   public synchronized void success() {
     // if a thread is waiting for a response
     if (someoneIsWaiting) {
+      debug("notifying waiting thread");
       this.completed = true;
       this.isSuccess = true;
       this.notify();
@@ -116,6 +119,7 @@ public class CallbackRegister implements ICanLog {
 
     // if callback is specified
     else if (onSuccess != null) {
+      debug("executing without notify");
       onSuccess.run();
       reset();
     }
@@ -134,6 +138,7 @@ public class CallbackRegister implements ICanLog {
   public synchronized void fail(Exception cause) {
     // if a thread is waiting for a response
     if (someoneIsWaiting) {
+      debug("notifying waiting thread");
       this.completed = true;
       this.isSuccess = false;
       this.cause = cause;
@@ -142,6 +147,7 @@ public class CallbackRegister implements ICanLog {
 
     // if callback is specified
     else if (onFailure != null) {
+      debug("executing without notify");
       onFailure.run(cause);
       reset();
     }

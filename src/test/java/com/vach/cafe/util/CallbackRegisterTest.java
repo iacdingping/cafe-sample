@@ -3,9 +3,9 @@ package com.vach.cafe.util;
 import org.junit.Test;
 
 import static com.vach.cafe.util.Util.bearSleep;
-import static com.vach.cafe.util.Util.log;
+import static com.vach.cafe.util.Util.wtf;
 
-public class CallbackRegisterTest {
+public class CallbackRegisterTest implements ICanLog{
 
   @Test
   public void shallBeReusable() {
@@ -18,7 +18,7 @@ public class CallbackRegisterTest {
     }).start();
 
     register
-        .onFailure(cause -> log("FAILURE"))
+        .onFailure(cause -> info("ON FAILURE ON MAIN"))
         .waitForResult();
 
     new Thread(()->{
@@ -27,8 +27,7 @@ public class CallbackRegisterTest {
     }).start();
 
     register
-        .onSuccess(result -> log("SUCCESS!!!"))
-        .onFailure(cause -> log("FAILURE"))
+        .onSuccess(results -> info("ON SUCCESS ON MAIN"))
         .waitForResult();
 
     new Thread(()->{
@@ -37,9 +36,9 @@ public class CallbackRegisterTest {
     }).start();
 
     register
-        .onSuccess(result -> log("SUCCESS!!!"))
-        .onFailure(cause -> log("FAILURE"))
-        .waitForResult();
+        .onSuccess(result -> info("ON SUCCESS ON EXECUTING THREAD"));
+
+    bearSleep(2100);
   }
 
 

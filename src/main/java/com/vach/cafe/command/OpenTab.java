@@ -1,52 +1,26 @@
 package com.vach.cafe.command;
 
-import com.google.common.base.Objects;
-
 import com.vach.cafe.Command;
+import com.vach.cafe.CommandHandler;
+import com.vach.cafe.Event;
+import com.vach.cafe.exception.TabIsOpen;
 
-import static com.vach.cafe.encoder.TypeRegister.COMMAND_OPEN_TAB;
+import java.util.List;
+
 
 public class OpenTab extends Command {
+
+  public interface IHandleOpenTab extends CommandHandler<OpenTab> {
+    List<Event> handle(OpenTab command) throws TabIsOpen;
+  }
 
   public int tableNumber;
   public String waiter;
 
   public OpenTab(long id, int tableNumber, String waiter) {
-    super(id, COMMAND_OPEN_TAB);
+    super(id);
     this.tableNumber = tableNumber;
     this.waiter = waiter;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    OpenTab that = (OpenTab) o;
-
-    return Objects.equal(this.tableNumber, that.tableNumber) &&
-           Objects.equal(this.waiter, that.waiter) &&
-           Objects.equal(this.aggregateId, that.aggregateId) &&
-           Objects.equal(this.type, that.type);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(tableNumber, waiter, aggregateId, type);
-  }
-
-  @Override
-  public String toString() {
-    return String.format(
-        "%s { id : '%d', tableNumber : '%d', waiter : '%s'}",
-        type,
-        aggregateId,
-        tableNumber,
-        waiter
-    );
-  }
 }

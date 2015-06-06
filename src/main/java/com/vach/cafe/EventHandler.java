@@ -2,15 +2,8 @@ package com.vach.cafe;
 
 import com.vach.cafe.util.ICanLog;
 
-public interface EventHandler<T extends Event> extends Handler<T>, ICanLog {
+public interface EventHandler<T extends Event> extends ICanLog {
 
-  /**
-   * Acceptable Event type
-   */
-  Class<T> type();
+  void apply(T event);
 
-  /**
-   * Handling business logic
-   */
-  void on(T event);
 }

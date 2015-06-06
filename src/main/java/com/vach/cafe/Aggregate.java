@@ -4,29 +4,17 @@ package com.vach.cafe;
 import com.vach.cafe.util.ICanLog;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static com.vach.cafe.util.Util.wtf;
 
 public abstract class Aggregate implements ICanLog{
 
   protected long id;
-  protected String type;
   protected int version;
-
   protected List<Event> changes = new ArrayList<>();
-  private HashMap<Class, Consumer> handlers = new HashMap<>();
-  private Bus<Event> eventBus;
 
   // interface
-
-  public Aggregate(String type, Bus<Event> eventBus) {
-    this.type = type;
-    this.eventBus = eventBus;
-  }
 
   /**
    * Unique id of an aggregate
@@ -36,88 +24,64 @@ public abstract class Aggregate implements ICanLog{
   }
 
   /**
-   * Type of the aggregate
-   */
-  public String type() {
-    return type;
-  }
-
-  /**
    * Current version of aggregate
    */
   public int version() {
     return version;
   }
 
-  /**
-   * Unmodifiable view of events applied to this aggregate
-   */
-  public List<Event> changes() {
-    return Collections.unmodifiableList(changes);
-  }
 
   /**
    * Apply events to aggregate
    */
-  public void load(List<Event> events) {
+  public  void load(List<Event> events) {
     for (Event event : events) {
-      this.apply(event, false);
+      this.applyEvent(event, false);
     }
   }
 
   /**
    * Apply events to aggregate
    */
-  public void load(Event... events) {
+  public void applyEvents(Event... events) {
     for (Event event : events) {
-      this.apply(event, false);
+      this.applyEvent(event, false);
     }
   }
 
   // environment
 
   /**
-   * Register handler for particular type of Event
+   * Dispatches the event to appropriate handler method
    */
-  protected <T extends Event> void registerHandler(Class<T> type, Consumer<T> handler) {
-    handlers.put(
-        type,
-        handler
-    );
+  public void applyEvent(Event event) {
+    applyEvent(event, true);
   }
 
   /**
    * Dispatches the event to appropriate handler method
    */
-  public void apply(Event event) {
-    apply(event, true);
-  }
-
-  /**
-   * Dispatches the event to appropriate handler method
-   */
-  private void apply(Event event, boolean isNew) {
-    Consumer handler = handlers.get(event.getClass());
-
-    if (handler == null) {
-      wtf("aggregate does not support events of type : " + event.getClass());
-    }
+  private <E extends Event> void applyEvent(E event, boolean isNew) {
 
     try {
-      handler.accept(event);
+      EventHandler<E> handler = (EventHandler<E>) this;
 
-      // add event to changes
-      this.changes.add(event);
-      // increment the version
-      this.version++;
+      try {
+        // apply state change
+        handler.apply(event);
 
-      if(isNew){
-        // emit event to all subscribers
-        debug("pushing event '%s' to event bus", event);
-        eventBus.publish(event);
+        // add the change
+        changes.add(event);
+
+        // increment state version
+        this.version++;
+
+      } catch (Exception e) {
+        wtf("apply method shall never throw exception", e);
       }
-    } catch (Exception e) {
-      wtf("apply method shall never throw exception", e);
+
+    }catch (ClassCastException e){
+      wtf("aggregate does not support events of type : " + event.getClass());
     }
 
   }

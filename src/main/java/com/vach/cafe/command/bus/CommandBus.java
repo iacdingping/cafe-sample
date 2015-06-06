@@ -22,7 +22,6 @@ public class CommandBus implements Bus<Command> {
   private final Disruptor<CommandHolder> disruptor;
 
   private final EventTranslatorOneArg<CommandHolder, Command> commandToCommandHolderTranslator = (holder, sequence, cmd) -> {
-    holder.type = cmd.type();
     holder.message = cmd;
   };
 
