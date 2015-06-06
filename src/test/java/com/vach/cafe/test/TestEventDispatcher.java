@@ -18,7 +18,8 @@ public class TestEventDispatcher implements Dispatcher<Event>{
 
   @Override
   public void dispatch(Event event) {
-    events.add(event);
+    debug("caught event %s", event);
+    this.events.add(event);
   }
 
   public Event[] events(){

@@ -13,10 +13,14 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertArrayEquals;
+import static com.vach.cafe.util.Validator.compareIgnoreOrder;
+import static org.junit.Assert.assertTrue;
 
+/**
+ * AggregateTester is a helper entity for aggregate unit testing
+ */
 @Component
-public class AggregateTester<A extends Aggregate> implements ICanLog{
+public class AggregateTester<A extends Aggregate> implements ICanLog {
 
   @Autowired
   CommandDispatcher commandDispatcher;
@@ -27,31 +31,26 @@ public class AggregateTester<A extends Aggregate> implements ICanLog{
   @Autowired
   Repository<A> repository;
 
-  private Event[] givenEvents;
-  private Command[] givenCommands;
-
-  private A aggregate;
-
   private Event[] emittedEvents;
   private Exception[] thrownExceptions;
 
-  public AggregateTester given(){
+  public AggregateTester given() {
     return this;
   }
 
-  public AggregateTester given(Event... events){
-    this.givenEvents = events;
+  public AggregateTester given(Event... events) {
 
-    aggregate.load(events);
+    for (Event event : events) {
+      repository.get(event.aggregateId()).load(event);
+    }
 
     return this;
   }
 
-  public AggregateTester when(Command... commands){
-    this.givenCommands = commands;
+  public AggregateTester when(Command... commands) {
     List<Exception> exceptions = new ArrayList<>();
 
-    for (Command command : givenCommands) {
+    for (Command command : commands) {
       command.progress().onFailure(exceptions::add);
       commandDispatcher.dispatch(command);
     }
@@ -64,17 +63,17 @@ public class AggregateTester<A extends Aggregate> implements ICanLog{
 
   // terminal operations
 
-  public void then(Event... expectedEvents){
-    assertArrayEquals(
-        expectedEvents,
-        emittedEvents
+  public void then(Event... expectedEvents) {
+    assertTrue(
+        compareIgnoreOrder(
+            expectedEvents,
+            emittedEvents
+        )
     );
   }
 
-  public void then(Exception... expectedExceptions){
-    assertArrayEquals(
-        expectedExceptions,
-        thrownExceptions
-    );
+  public void then(Class<Exception> expectedExceptionType) {
+    assertTrue(thrownExceptions.length == 1);
+    assertTrue(thrownExceptions[0].getClass().equals(expectedExceptionType));
   }
 }

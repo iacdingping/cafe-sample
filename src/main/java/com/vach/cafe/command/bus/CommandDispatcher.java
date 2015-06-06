@@ -21,7 +21,7 @@ public class CommandDispatcher implements Dispatcher<Command> {
 
   @Autowired
   public CommandDispatcher(List<CommandHandler> handlers) {
-    debug("registering handlers");
+    info("registering handlers");
     for (CommandHandler handler : handlers) {
       trace("handler : %s", handler.getClass().getSimpleName());
       this.handlers.put(handler.type(), handler);
@@ -33,13 +33,15 @@ public class CommandDispatcher implements Dispatcher<Command> {
   @Override
   @SuppressWarnings("unchecked")
   public void dispatch(Command command) {
-    trace("dispatching command : %s", command);
 
     CommandHandler handler = handlers.get(command.getClass());
 
     if (handler == null) {
       wtf("no handler is registered for type : %s", command.getClass());
     }
+
+
+    debug("dispatching command : %s to %s", command, handler.getClass().getSimpleName());
 
     handler.on(command);
   }

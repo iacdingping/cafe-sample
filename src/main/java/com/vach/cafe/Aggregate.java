@@ -1,6 +1,8 @@
 package com.vach.cafe;
 
 
+import com.vach.cafe.util.ICanLog;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +11,7 @@ import java.util.function.Consumer;
 
 import static com.vach.cafe.util.Util.wtf;
 
-public abstract class Aggregate {
+public abstract class Aggregate implements ICanLog{
 
   protected long id;
   protected String type;
@@ -58,8 +60,9 @@ public abstract class Aggregate {
    * Apply events to aggregate
    */
   public void load(List<Event> events) {
-
-    events.forEach(this::apply);
+    for (Event event : events) {
+      this.apply(event, false);
+    }
   }
 
   /**
@@ -67,7 +70,7 @@ public abstract class Aggregate {
    */
   public void load(Event... events) {
     for (Event event : events) {
-      this.apply(event);
+      this.apply(event, false);
     }
   }
 
@@ -80,15 +83,6 @@ public abstract class Aggregate {
     handlers.put(
         type,
         handler
-            // add additional logic to handlers
-            .andThen((event) -> {
-              // add event to changes
-              this.changes.add(event);
-              // increment the version
-              this.version++;
-              // emit event to all subscribers
-              eventBus.publish(event);
-            })
     );
   }
 
@@ -96,6 +90,13 @@ public abstract class Aggregate {
    * Dispatches the event to appropriate handler method
    */
   public void apply(Event event) {
+    apply(event, true);
+  }
+
+  /**
+   * Dispatches the event to appropriate handler method
+   */
+  private void apply(Event event, boolean isNew) {
     Consumer handler = handlers.get(event.getClass());
 
     if (handler == null) {
@@ -104,6 +105,17 @@ public abstract class Aggregate {
 
     try {
       handler.accept(event);
+
+      // add event to changes
+      this.changes.add(event);
+      // increment the version
+      this.version++;
+
+      if(isNew){
+        // emit event to all subscribers
+        debug("pushing event '%s' to event bus", event);
+        eventBus.publish(event);
+      }
     } catch (Exception e) {
       wtf("apply method shall never throw exception", e);
     }

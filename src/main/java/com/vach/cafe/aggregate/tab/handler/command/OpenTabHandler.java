@@ -4,7 +4,7 @@ import com.vach.cafe.CommandHandler;
 import com.vach.cafe.Repository;
 import com.vach.cafe.aggregate.tab.Tab;
 import com.vach.cafe.command.OpenTab;
-import com.vach.cafe.event.TabOpened;
+import com.vach.cafe.exception.TabIsOpen;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,18 +22,16 @@ public class OpenTabHandler implements CommandHandler<OpenTab> {
 
   @Override
   public void on(OpenTab command) {
-    info("handling : %s", command);
+    debug("handling : %s", command);
 
     Tab tab = repo.get(command.aggregateId());
 
-    tab.apply(
-        new TabOpened(
-            command.aggregateId(),
-            command.tableNumber,
-            command.waiter
-        )
-    );
+    try {
+      tab.open(command);
+      command.progress().success();
+    } catch (TabIsOpen tabIsOpen) {
+      command.progress().fail(tabIsOpen);
+    }
 
-    command.progress().success();
   }
 }

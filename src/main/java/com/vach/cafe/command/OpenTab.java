@@ -42,9 +42,9 @@ public class OpenTab extends Command {
   @Override
   public String toString() {
     return String.format(
-        "openTab { id : '%d', type : '%s', tableNumber : '%d', waiter : '%s'}",
-        aggregateId,
+        "%s { id : '%d', tableNumber : '%d', waiter : '%s'}",
         type,
+        aggregateId,
         tableNumber,
         waiter
     );

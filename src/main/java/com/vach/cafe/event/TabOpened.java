@@ -22,9 +22,9 @@ public class TabOpened extends Event {
   @Override
   public String toString() {
     return String.format(
-        "tabOpened { id : '%d', type : '%s', tableNumber : '%d', waiter : '%s'}",
-        aggregateId,
+        "%s { id : '%d', tableNumber : '%d', waiter : '%s'}",
         type,
+        aggregateId,
         tableNumber,
         waiter
     );

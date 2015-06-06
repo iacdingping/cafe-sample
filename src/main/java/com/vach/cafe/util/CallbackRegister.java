@@ -8,7 +8,7 @@ package com.vach.cafe.util;
  *
  * TODO improve and support multiple callbacks
  */
-public class CallbackRegister implements ICanLog{
+public class CallbackRegister implements ICanLog {
 
   private boolean completed;
   private boolean isSuccess;
@@ -24,7 +24,7 @@ public class CallbackRegister implements ICanLog{
    * Callback to be executed if command succeeds
    */
   public CallbackRegister onSuccess(SuccessCallback callable) {
-    info("registering success callback");
+    debug("registering success callback");
     this.onSuccess = callable;
     return this;
   }
@@ -33,14 +33,14 @@ public class CallbackRegister implements ICanLog{
    * Callback to be executed if command fails
    */
   public CallbackRegister onFailure(FailureCallback callable) {
-    info("registering fail callback");
+    debug("registering fail callback");
     onFailure = callable;
     return this;
   }
 
   /**
-   * Puts thread in WAIT state till command is explicitly completed trough either success(..) or fail(..) IMPORTANT : all command
-   * handlers shall complete command.
+   * Puts thread in WAIT state till command is explicitly completed trough either success(..) or fail(..), after its completed waiting
+   * thread will execute the callback. IMPORTANT : all command handlers shall complete command.
    */
   public synchronized void waitForResult() {
 
@@ -48,29 +48,29 @@ public class CallbackRegister implements ICanLog{
 
       // wait for completion
       while (!completed) {
-        info("waiting for notification");
+        debug("waiting for notification");
         someoneIsWaiting = true;
         this.wait();
       }
 
       if (isSuccess) {
         if (onSuccess != null) {
-          info("executing on success");
+          debug("executing on success");
           onSuccess.run(result);
         } else {
-          info("onSuccess not specified");
+          debug("onSuccess not specified");
         }
       } else {
         if (onFailure != null) {
-          info("executing on failure");
+          debug("executing on failure");
           onFailure.run(cause);
         } else {
-          info("onFailure not specified");
+          debug("onFailure not specified");
         }
       }
 
     } catch (InterruptedException e) {
-      info("got interrupted");
+      debug("got interrupted");
       onFailure.run(e);
     }
 
@@ -82,37 +82,48 @@ public class CallbackRegister implements ICanLog{
    *
    * @param result optional return data (can be null)
    */
-  public synchronized void success(Object result) {
-
-    // if no one is waiting for response
-    if (!someoneIsWaiting) {
-      // ignore the call
-      info("ignoring the call");
-      return;
+  public synchronized void success(Object... result) {
+    // if a thread is waiting for a response
+    if (someoneIsWaiting) {
+      this.completed = true;
+      this.isSuccess = true;
+      this.result = result;
+      this.notify();
     }
 
-    info("completing with success");
-    this.completed = true;
-    this.isSuccess = true;
-    this.result = result;
-    this.notify();
+    // if callback is specified
+    else if (onSuccess != null) {
+      onSuccess.run(result);
+      reset();
+    }
+
+    // ignore the call
+    else {
+      debug("ignoring the call");
+    }
   }
 
   /**
    * Complete with success
    */
   public synchronized void success() {
-    // if no one is waiting for response
-    if (!someoneIsWaiting) {
-      // ignore the call
-      info("ignoring the call");
-      return;
+    // if a thread is waiting for a response
+    if (someoneIsWaiting) {
+      this.completed = true;
+      this.isSuccess = true;
+      this.notify();
     }
 
-    info("completing with success");
-    this.completed = true;
-    this.isSuccess = true;
-    this.notify();
+    // if callback is specified
+    else if (onSuccess != null) {
+      onSuccess.run();
+      reset();
+    }
+
+    // ignore the call
+    else {
+      debug("ignoring the call");
+    }
   }
 
   /**
@@ -121,23 +132,28 @@ public class CallbackRegister implements ICanLog{
    * @param cause reason of failure
    */
   public synchronized void fail(Exception cause) {
-
-    // if no one is waiting for response
-    if (!someoneIsWaiting) {
-      // ignore the call
-      info("ignoring the call");
-      return;
+    // if a thread is waiting for a response
+    if (someoneIsWaiting) {
+      this.completed = true;
+      this.isSuccess = false;
+      this.cause = cause;
+      this.notify();
     }
 
-    info("completing with failure");
-    this.completed = true;
-    this.isSuccess = false;
-    this.cause = cause;
-    this.notify();
+    // if callback is specified
+    else if (onFailure != null) {
+      onFailure.run(cause);
+      reset();
+    }
+
+    // ignore the call
+    else {
+      debug("ignoring the call");
+    }
   }
 
   private void reset() {
-    info("resetting the state");
+    debug("resetting the state");
     completed = false;
     isSuccess = false;
 
@@ -153,7 +169,7 @@ public class CallbackRegister implements ICanLog{
   @FunctionalInterface
   public interface SuccessCallback {
 
-    void run(Object result);
+    void run(Object... results);
   }
 
   @FunctionalInterface

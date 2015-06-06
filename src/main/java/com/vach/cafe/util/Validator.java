@@ -2,6 +2,8 @@ package com.vach.cafe.util;
 
 import java.util.Collection;
 
+import static java.util.Arrays.asList;
+
 public abstract class Validator {
 
   // exception throwers
@@ -191,5 +193,11 @@ public abstract class Validator {
 
   public static boolean isLowercase(String string) {
     return string != null && string.equals(string.toLowerCase());
+  }
+
+  // compare ignore order
+
+  public static boolean compareIgnoreOrder(Object[] expected, Object[] actual){
+    return asList(expected).containsAll(asList(actual));
   }
 }
