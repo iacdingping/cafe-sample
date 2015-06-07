@@ -1,6 +1,8 @@
 package com.vach.cafe;
 
-public abstract class Event implements Message {
+import com.vach.cafe.util.ObjectSupport;
+
+public abstract class Event extends ObjectSupport implements Message {
 
   protected long id;
 

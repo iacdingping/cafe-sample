@@ -1,6 +1,8 @@
 package com.vach.cafe;
 
-public abstract class Command implements Message {
+import com.vach.cafe.util.ObjectSupport;
+
+public abstract class Command extends ObjectSupport implements Message {
 
   public long id;
 

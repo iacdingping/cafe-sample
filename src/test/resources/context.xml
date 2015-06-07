@@ -9,24 +9,4 @@
 
        <context:annotation-config/>
 
-       <!-- GLOBAL COMPONENTS -->
-
-       <!-- message buses -->
-       <bean class="com.vach.cafe.test.BlockingCommandBus" scope="prototype"/>
-       <bean class="com.vach.cafe.test.BlockingEventBus" scope="prototype"/>
-
-       <!-- dispatchers -->
-       <bean class="com.vach.cafe.command.bus.CommandDispatcher" scope="prototype"/>
-       <bean class="com.vach.cafe.test.TestEventDispatcher" scope="prototype"/>
-
-       <!-- TAB AGGREGATE COMPONENTS -->
-
-       <bean class="com.vach.cafe.aggregate.tab.Tab" scope="prototype"/>
-       <bean class="com.vach.cafe.aggregate.tab.repo.TabRepo" scope="prototype"/>
-
-       <context:component-scan base-package="com.vach.cafe.aggregate.tab.handler.command"/>
-       <context:component-scan base-package="com.vach.cafe.aggregate.tab.handler.event"/>
-
-       <!-- TEST TOOLS -->
-       <bean class="com.vach.cafe.test.AggregateTester" scope="prototype"/>
 </beans>

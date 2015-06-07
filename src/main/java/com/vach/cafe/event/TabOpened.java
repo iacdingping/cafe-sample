@@ -5,6 +5,8 @@ import com.vach.cafe.EventHandler;
 
 public class TabOpened extends Event {
 
+  public long id;
+
   public interface IHandleTabOpened extends EventHandler<TabOpened>{
     void apply(TabOpened event);
   }
@@ -17,4 +19,7 @@ public class TabOpened extends Event {
     this.tableNumber = tableNumber;
     this.waiter = waiter;
   }
+
+  
+
 }

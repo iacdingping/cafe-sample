@@ -8,7 +8,7 @@ import java.util.List;
 
 import static com.vach.cafe.util.Util.wtf;
 
-public abstract class Aggregate implements ICanLog{
+public abstract class Aggregate implements ICanLog {
 
   protected long id;
   protected int version;
@@ -30,59 +30,41 @@ public abstract class Aggregate implements ICanLog{
     return version;
   }
 
+  // behaviour
 
-  /**
-   * Apply events to aggregate
-   */
-  public  void load(List<Event> events) {
-    for (Event event : events) {
-      this.applyEvent(event, false);
-    }
+//  public <E extends Event> void applyEvents(E... events) {
+//    for (E event : events) {
+//      this.applyEvent(event);
+//    }
+//  }
+
+  public <E extends Event> void applyEvents(List<E> events) {
+    events.forEach(this::applyEvent);
   }
 
-  /**
-   * Apply events to aggregate
-   */
-  public void applyEvents(Event... events) {
-    for (Event event : events) {
-      this.applyEvent(event, false);
-    }
-  }
-
-  // environment
-
-  /**
-   * Dispatches the event to appropriate handler method
-   */
-  public void applyEvent(Event event) {
-    applyEvent(event, true);
-  }
-
-  /**
-   * Dispatches the event to appropriate handler method
-   */
-  private <E extends Event> void applyEvent(E event, boolean isNew) {
-
+  public <E extends Event> void applyEvent(E event) {
     try {
-      EventHandler<E> handler = (EventHandler<E>) this;
+      // apply state change
+      ((EventHandler<E>) this).apply(event);
 
-      try {
-        // apply state change
-        handler.apply(event);
+      // add the change
+      changes.add(event);
 
-        // add the change
-        changes.add(event);
+      // increment state version
+      this.version++;
 
-        // increment state version
-        this.version++;
-
-      } catch (Exception e) {
-        wtf("apply method shall never throw exception", e);
-      }
-
-    }catch (ClassCastException e){
+    } catch (ClassCastException e) {
       wtf("aggregate does not support events of type : " + event.getClass());
+    } catch (Exception e) {
+      wtf("apply method shall never throw exception", e);
     }
+  }
 
+  public <C extends Command> List<Event> handleCommand(C command) throws Exception {
+    try {
+      return ((CommandHandler<C>) this).handle(command);
+    } catch (ClassCastException e) {
+      return wtf("aggregate does handle commands of type : " + command.getClass());
+    }
   }
 }
