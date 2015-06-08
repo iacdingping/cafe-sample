@@ -1,5 +1,5 @@
 package com.vach.cafe.exception;
 
-public class TabHasUnservedItems extends Exception {
+public class TabHasUnservedItems extends BaseException {
 
 }

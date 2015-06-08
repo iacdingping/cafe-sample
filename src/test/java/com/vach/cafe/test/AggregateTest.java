@@ -3,6 +3,7 @@ package com.vach.cafe.test;
 import com.vach.cafe.Aggregate;
 import com.vach.cafe.Command;
 import com.vach.cafe.Event;
+import com.vach.cafe.exception.BaseException;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -40,7 +41,7 @@ public class AggregateTest<T extends Aggregate> {
     return (aggregate) -> {
       try {
         return aggregate.handleCommand(command);
-      } catch (Exception e) {
+      } catch (BaseException e) {
         return e;
       }
     };
@@ -49,8 +50,8 @@ public class AggregateTest<T extends Aggregate> {
   protected Consumer<Object> then(Event... expected) {
 
     return (a) -> {
-      List<Event> actual = cast(a);
-      assertTrue(asList(expected).containsAll(actual));
+        List<Event> actual = cast(a);
+        assertTrue(asList(expected).containsAll(actual));
     };
   }
 

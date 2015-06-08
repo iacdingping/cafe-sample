@@ -1,8 +1,8 @@
 package com.vach.cafe.aggregate.tab;
 
-import com.google.common.base.Objects;
+import com.vach.cafe.util.ObjectSupport;
 
-public class OrderedItem {
+public class OrderedItem extends ObjectSupport{
   public int menuNumber;
   public double price;
   public boolean isDrink;
@@ -23,30 +23,7 @@ public class OrderedItem {
     return !isDrink;
   }
 
-
-
-  @Override
-  public String toString() {
-    return String.format("{ %s : %s }", description, price);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-
-    OrderedItem that = (OrderedItem) o;
-
-    return Objects.equal(this.menuNumber, that.menuNumber) &&
-           Objects.equal(this.price, that.price) &&
-           Objects.equal(this.isDrink, that.isDrink) &&
-           Objects.equal(this.description, that.description);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(menuNumber, price, isDrink, description);
+  public int menuNumber() {
+    return menuNumber;
   }
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.vach.cafe.util.Util.wtf;
+import static java.util.Arrays.asList;
 
 public abstract class Aggregate implements ICanLog {
 
@@ -35,12 +36,13 @@ public abstract class Aggregate implements ICanLog {
 
   // behaviour
 
-  public <E extends Event> void applyEvents(List<E> events) {
+  public <E extends Event> List<E> applyEvents(List<E> events) {
     events.forEach(this::applyEvent);
+    return events;
   }
 
   @SuppressWarnings("unchecked")
-  public <E extends Event> void applyEvent(E event) {
+  public <E extends Event> List<E> applyEvent(E event) {
 
     Class currentClass = this.getClass();
     Class eventClass = event.getClass();
@@ -55,21 +57,7 @@ public abstract class Aggregate implements ICanLog {
       wtf(e, "aggregate does not support events of type : %s", event.getClass());
     }
 
-//    try {
-//      // apply state change
-//      ((EventHandler<E>) this).apply(event);
-//
-//      // add the change
-//      changes.add(event);
-//
-//      // increment state version
-//      this.version++;
-//
-//    } catch (ClassCastException e) {
-//      wtf("aggregate does not support events of type : " + event.getClass());
-//    } catch (Exception e) {
-//      wtf("apply method shall never throw exception", e);
-//    }
+    return asList(event);
   }
 
   @SuppressWarnings("unchecked")
@@ -88,17 +76,14 @@ public abstract class Aggregate implements ICanLog {
 
       if(cause instanceof BaseException){
         throw (BaseException) cause;
+      }else{
+        wtf(cause);
       }
 
     } catch (Exception e) {
       wtf(e, "aggregate does not support commands of type : %s", command.getClass());
     }
-    
-//    try {
-//      return ((CommandHandler<C>) this).handle(command);
-//    } catch (ClassCastException e) {
-//      return wtf("aggregate does handle commands of type : " + command.getClass());
-//    }
+
     return wtf();
   }
 }
