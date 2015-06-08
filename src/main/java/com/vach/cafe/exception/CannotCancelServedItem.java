@@ -1,5 +1,5 @@
 package com.vach.cafe.exception;
 
-public class CannotCancelServedItem extends BaseException {
+public class CannotCancelServedItem extends CommandException {
 
 }

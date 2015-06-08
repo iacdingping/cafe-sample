@@ -3,7 +3,7 @@ package com.vach.cafe.test;
 import com.vach.cafe.Aggregate;
 import com.vach.cafe.Command;
 import com.vach.cafe.Event;
-import com.vach.cafe.exception.BaseException;
+import com.vach.cafe.exception.CommandException;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -12,7 +12,6 @@ import java.util.function.Supplier;
 
 import static com.vach.cafe.util.Util.cast;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -32,7 +31,7 @@ public class AggregateTest<T extends Aggregate> {
 
   protected Supplier<T> given(T aggregate, Event... events) {
     return () -> {
-      aggregate.applyEvents(asList(events));
+      aggregate.handleEvent(asList(events));
       return aggregate;
     };
   }
@@ -41,7 +40,7 @@ public class AggregateTest<T extends Aggregate> {
     return (aggregate) -> {
       try {
         return aggregate.handleCommand(command);
-      } catch (BaseException e) {
+      } catch (CommandException e) {
         return e;
       }
     };
@@ -55,15 +54,15 @@ public class AggregateTest<T extends Aggregate> {
     };
   }
 
-  protected Consumer<Object> then(Exception expected) {
-
-    return (a) -> {
-      Exception actual = cast(a);
-      assertEquals(expected, actual);
-    };
-  }
-
-//  protected Consumer<Object> thenFailWith(Class type){
-//    return (a)-> Assert.assertTrue(type.isAssignableFrom(a.getClass()));
+//  protected Consumer<Object> then(Exception expected) {
+//
+//    return (a) -> {
+//      Exception actual = cast(a);
+//      assertEquals(expected, actual);
+//    };
 //  }
+
+  protected Consumer<Object> thenFailWith(Class<? extends CommandException> type){
+    return (a)-> assertTrue(type.isAssignableFrom(a.getClass()));
+  }
 }

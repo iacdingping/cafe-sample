@@ -68,8 +68,8 @@ public class TabTests extends AggregateTest<Tab> {
         when(
             new OpenTab(testId, testTable, testWaiter)
         ),
-        then(
-            new TabIsOpen()
+        thenFailWith(
+            TabIsOpen.class
         )
     );
   }
@@ -83,8 +83,8 @@ public class TabTests extends AggregateTest<Tab> {
         when(
             new PlaceOrder(testId, testDrink1)
         ),
-        then(
-            new TabNotOpen()
+        thenFailWith(
+            TabNotOpen.class
         )
     );
   }
@@ -133,10 +133,7 @@ public class TabTests extends AggregateTest<Tab> {
         ),
         then(
             new FoodOrdered(testId, testFood1),
-            new DrinksOrdered(
-                testId,
-                testDrink1
-            )
+            new DrinksOrdered(testId, testDrink1)
         )
     );
   }
@@ -169,8 +166,8 @@ public class TabTests extends AggregateTest<Tab> {
         when(
             new MarkDrinksServed(testId, testDrink2.menuNumber)
         ),
-        then(
-            new DrinksNotOutstanding()
+        thenFailWith(
+            DrinksNotOutstanding.class
         )
     );
   }
@@ -187,8 +184,8 @@ public class TabTests extends AggregateTest<Tab> {
         when(
             new MarkDrinksServed(testId, testDrink1.menuNumber)
         ),
-        then(
-            new DrinksNotOutstanding()
+        thenFailWith(
+            DrinksNotOutstanding.class
         )
     );
   }
@@ -223,8 +220,8 @@ public class TabTests extends AggregateTest<Tab> {
         when(
             new CloseTab(testId, 2)
         ),
-        then(
-            new MustPayEnough()
+        thenFailWith(
+            MustPayEnough.class
         )
     );
   }
@@ -240,8 +237,8 @@ public class TabTests extends AggregateTest<Tab> {
         when(
             new CloseTab(testId, 3)
         ),
-        then(
-            new TabHasUnservedItems()
+        thenFailWith(
+            TabHasUnservedItems.class
         )
     );
   }

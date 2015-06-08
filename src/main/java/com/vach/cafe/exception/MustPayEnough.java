@@ -1,5 +1,5 @@
 package com.vach.cafe.exception;
 
-public class MustPayEnough extends BaseException {
+public class MustPayEnough extends CommandException {
 
 }

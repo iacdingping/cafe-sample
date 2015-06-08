@@ -51,7 +51,7 @@ public class Tab extends Aggregate {
         command.waiter
     );
 
-    apply(tabOpened);
+    handle(tabOpened);
 
     return asList(tabOpened);
   }
@@ -69,15 +69,16 @@ public class Tab extends Aggregate {
     if (!drinkOrders.isEmpty()) {
       DrinksOrdered drinksOrdered = new DrinksOrdered(command.id, drinkOrders);
       events.add(drinksOrdered);
+      handle(drinksOrdered);
     }
 
     List<OrderedItem> foodOrders = command.getFoodOrders();
     if (!foodOrders.isEmpty()) {
       FoodOrdered foodOrdered = new FoodOrdered(command.id, foodOrders);
-      events.add(foodOrdered);
+      handle(foodOrdered);
     }
 
-    return applyEvents(events);
+    return events;
   }
 
   public List<Event> handle(MarkDrinksServed command) throws TabNotOpen, DrinksNotOutstanding {
@@ -93,7 +94,10 @@ public class Tab extends Aggregate {
       }
     }
 
-    return applyEvent(new DrinksServed(command.id, command.menuNumbers));
+    DrinksServed event = new DrinksServed(command.id, command.menuNumbers);
+    handle(event);
+
+    return asList(event);
   }
 
   public List<Event> handle(CloseTab command) throws TabNotOpen, TabHasUnservedItems, MustPayEnough {
@@ -111,7 +115,7 @@ public class Tab extends Aggregate {
       throw new MustPayEnough();
     }
 
-    return applyEvent(
+    return handleEvent(
         new TabClosed(
             command.id,
             command.amountPaid,
@@ -122,8 +126,8 @@ public class Tab extends Aggregate {
   }
   // event handlers
 
-  public void apply(TabOpened event) {
-    info("applying %s event", event.getClass().getSimpleName());
+  public void handle(TabOpened event) {
+    info("handling %s event", event.getClass().getSimpleName());
 
     open = true;
     this.id = event.id;
@@ -131,28 +135,28 @@ public class Tab extends Aggregate {
     this.waiter = event.waiter;
   }
 
-  public void apply(DrinksOrdered event) {
-    info("applying %s event", event.getClass().getSimpleName());
+  public void handle(DrinksOrdered event) {
+    info("handling %s event", event.getClass().getSimpleName());
 
     for (OrderedItem item : event.items) {
       outstandingDrinks.put(item.menuNumber, item);
     }
   }
 
-  public void apply(FoodOrdered event) {
-    info("applying %s event", event.getClass().getSimpleName());
+  public void handle(FoodOrdered event) {
+    info("handling %s event", event.getClass().getSimpleName());
 
     this.outstandingFood.addAll(event.items);
 
   }
 
-  public void apply(DrinksServed event) {
+  public void handle(DrinksServed event) {
     event.menuNumbers.stream()
         .map(outstandingDrinks::remove)
         .forEach(item -> servedItemsValue += item.price);
   }
 
-  public void apply(TabClosed event) {
+  public void handle(TabClosed event) {
     this.open = false;
   }
 

@@ -1,0 +1,14 @@
+
+In order to handle an event of type T an aggregate must provide publicly accessible method with signature of
+
+public void apply(T event);
+
+it must not throw any exceptions, no business logic shall be in apply() methods, those are only modifying
+the state of aggregate, all the business logic shall be performed before the event is applied.
+
+In order to handle a command of type T an aggregate must provide publicly accessible method with signature of
+
+public List<Event> handle(T command) throws BaseException;
+
+BaseExceptions are exceptions thrown by business logic, predefined for each exceptional case in application.
+Handler methods must return all events that were applied for their execution.
