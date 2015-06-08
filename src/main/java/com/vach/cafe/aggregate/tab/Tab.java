@@ -124,6 +124,7 @@ public class Tab extends Aggregate {
         )
     );
   }
+
   // event handlers
 
   public void handle(TabOpened event) {
