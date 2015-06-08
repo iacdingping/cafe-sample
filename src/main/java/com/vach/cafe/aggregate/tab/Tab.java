@@ -28,8 +28,11 @@ public class Tab extends Aggregate {
   // command handlers
 
   public List<Event> handle(OpenTab command) throws TabIsOpen {
+    info("handle %s command", command.getClass().getSimpleName());
 
-    if(open) throw new TabIsOpen();
+    if (open) {
+      throw new TabIsOpen();
+    }
 
     TabOpened tabOpened = new TabOpened(
         command.id,
@@ -43,20 +46,23 @@ public class Tab extends Aggregate {
   }
 
   public List<Event> handle(PlaceOrder command) throws TabNotOpen {
+    info("handle %s command", command.getClass().getSimpleName());
 
-    if(!open) throw new TabNotOpen();
+    if (!open) {
+      throw new TabNotOpen();
+    }
 
     List<Event> events = new ArrayList<>();
 
     List<OrderedItem> drinkOrders = command.getDrinkOrders();
-    if(!drinkOrders.isEmpty()){
+    if (!drinkOrders.isEmpty()) {
       DrinksOrdered drinksOrdered = new DrinksOrdered(command.id, drinkOrders);
       apply(drinksOrdered);
       events.add(drinksOrdered);
     }
 
     List<OrderedItem> foodOrders = command.getDrinkOrders();
-    if(!foodOrders.isEmpty()){
+    if (!foodOrders.isEmpty()) {
       FoodOrdered foodOrdered = new FoodOrdered(command.id, foodOrders);
       apply(foodOrdered);
       events.add(foodOrdered);
@@ -68,6 +74,8 @@ public class Tab extends Aggregate {
   // event handlers
 
   public void apply(TabOpened event) {
+    info("applying %s event", event.getClass().getSimpleName());
+
     open = true;
     this.id = event.id;
     this.table = event.tableNumber;
@@ -75,10 +83,15 @@ public class Tab extends Aggregate {
   }
 
   public void apply(DrinksOrdered event) {
+    info("applying %s event", event.getClass().getSimpleName());
 
+    this.outstandingDrinks.addAll(event.items);
   }
 
   public void apply(FoodOrdered event) {
+    info("applying %s event", event.getClass().getSimpleName());
+
+    this.outstandingFood.addAll(event.items);
 
   }
 }

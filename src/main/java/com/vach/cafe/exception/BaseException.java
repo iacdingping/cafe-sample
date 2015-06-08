@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class BaseException extends Exception {
+public class BaseException extends RuntimeException {
 
   @Override
   public boolean equals(Object obj) {

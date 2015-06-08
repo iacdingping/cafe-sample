@@ -35,7 +35,6 @@ public class TabTests extends AggregateTest<Tab> {
 
   @Test
   public void canOpenNewTab() {
-
     test(
         given(new Tab()),
         when(
@@ -56,7 +55,7 @@ public class TabTests extends AggregateTest<Tab> {
   }
 
   @Test
-  public void cannNotOpenAlreadyOpenedTab(){
+  public void canNotOpenAlreadyOpenedTab() {
     test(
         given(
             new Tab(),
@@ -80,7 +79,7 @@ public class TabTests extends AggregateTest<Tab> {
   }
 
   @Test
-  public void cannotPlaceOrderWithUnopenedTab(){
+  public void cannotPlaceOrderWithUnopenedTab() {
     test(
         given(
             new Tab()

@@ -27,6 +27,9 @@ public class Util {
   public static <T> T wtf(Throwable exception, String message) {
     throw new IllegalStateException(message, exception);
   }
+  public static <T> T wtf(Throwable exception, String message, Object... args) {
+    throw new IllegalStateException(String.format(message, args), exception);
+  }
 
   // concurrency
 

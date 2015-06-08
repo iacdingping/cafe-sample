@@ -1,13 +1,8 @@
 package com.vach.cafe.event;
 
 import com.vach.cafe.Event;
-import com.vach.cafe.EventHandler;
 
 public class TabOpened extends Event {
-
-  public interface IHandleTabOpened extends EventHandler<TabOpened>{
-    void apply(TabOpened event);
-  }
 
   public int tableNumber;
   public String waiter;
