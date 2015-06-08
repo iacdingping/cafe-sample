@@ -61,4 +61,8 @@ public class AggregateTest<T extends Aggregate> {
       Assert.assertEquals(expected, actual);
     };
   }
+
+  protected Consumer<Object> thenFailWith(Class type){
+    return (a)-> Assert.assertTrue(type.isAssignableFrom(a.getClass()));
+  }
 }

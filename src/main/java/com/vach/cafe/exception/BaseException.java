@@ -22,6 +22,4 @@ public class BaseException extends Exception {
     return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
   }
 
-
-
 }

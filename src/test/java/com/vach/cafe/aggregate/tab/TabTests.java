@@ -1,8 +1,10 @@
 package com.vach.cafe.aggregate.tab;
 
 import com.vach.cafe.command.OpenTab;
+import com.vach.cafe.command.PlaceOrder;
 import com.vach.cafe.event.TabOpened;
 import com.vach.cafe.exception.TabIsOpen;
+import com.vach.cafe.exception.TabNotOpen;
 import com.vach.cafe.test.AggregateTest;
 
 import org.junit.Before;
@@ -10,6 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static java.util.Arrays.asList;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -19,12 +23,14 @@ public class TabTests extends AggregateTest<Tab> {
   long testId;
   int testTable;
   String testWaiter;
+  OrderedItem testDrink1;
 
   @Before
   public void setUp() {
     testId = 5;
     testTable = 11;
     testWaiter = "john";
+    testDrink1 = new OrderedItem(5, 2.45, true, "cola");
   }
 
   @Test
@@ -50,7 +56,7 @@ public class TabTests extends AggregateTest<Tab> {
   }
 
   @Test
-  public void canNotOpenAlreadyOpenedTab(){
+  public void cannNotOpenAlreadyOpenedTab(){
     test(
         given(
             new Tab(),
@@ -69,6 +75,24 @@ public class TabTests extends AggregateTest<Tab> {
         ),
         then(
             new TabIsOpen()
+        )
+    );
+  }
+
+  @Test
+  public void cannotPlaceOrderWithUnopenedTab(){
+    test(
+        given(
+            new Tab()
+        ),
+        when(
+            new PlaceOrder(
+                testId,
+                asList(testDrink1)
+            )
+        ),
+        then(
+            new TabNotOpen()
         )
     );
   }

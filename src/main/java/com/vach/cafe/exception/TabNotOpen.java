@@ -1,5 +1,5 @@
 package com.vach.cafe.exception;
 
-public class TabNotOpen extends Exception {
+public class TabNotOpen extends BaseException {
 
 }

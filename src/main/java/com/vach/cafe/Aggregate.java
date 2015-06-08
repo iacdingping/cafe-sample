@@ -32,12 +32,6 @@ public abstract class Aggregate implements ICanLog {
 
   // behaviour
 
-//  public <E extends Event> void applyEvents(E... events) {
-//    for (E event : events) {
-//      this.applyEvent(event);
-//    }
-//  }
-
   public <E extends Event> void applyEvents(List<E> events) {
     events.forEach(this::applyEvent);
   }
