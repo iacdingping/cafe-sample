@@ -4,8 +4,6 @@ import com.vach.cafe.Aggregate;
 import com.vach.cafe.Command;
 import com.vach.cafe.Event;
 
-import org.junit.Assert;
-
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -13,6 +11,8 @@ import java.util.function.Supplier;
 
 import static com.vach.cafe.util.Util.cast;
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class AggregateTest<T extends Aggregate> {
@@ -50,7 +50,7 @@ public class AggregateTest<T extends Aggregate> {
 
     return (a) -> {
       List<Event> actual = cast(a);
-      Assert.assertEquals(asList(expected), actual);
+      assertTrue(asList(expected).containsAll(actual));
     };
   }
 
@@ -58,11 +58,11 @@ public class AggregateTest<T extends Aggregate> {
 
     return (a) -> {
       Exception actual = cast(a);
-      Assert.assertEquals(expected, actual);
+      assertEquals(expected, actual);
     };
   }
 
-  protected Consumer<Object> thenFailWith(Class type){
-    return (a)-> Assert.assertTrue(type.isAssignableFrom(a.getClass()));
-  }
+//  protected Consumer<Object> thenFailWith(Class type){
+//    return (a)-> Assert.assertTrue(type.isAssignableFrom(a.getClass()));
+//  }
 }

@@ -61,7 +61,7 @@ public class Tab extends Aggregate {
       events.add(drinksOrdered);
     }
 
-    List<OrderedItem> foodOrders = command.getDrinkOrders();
+    List<OrderedItem> foodOrders = command.getFoodOrders();
     if (!foodOrders.isEmpty()) {
       FoodOrdered foodOrdered = new FoodOrdered(command.id, foodOrders);
       apply(foodOrdered);
