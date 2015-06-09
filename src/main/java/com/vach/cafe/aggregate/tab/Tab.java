@@ -38,6 +38,7 @@ public class Tab extends Aggregate {
 
   // command handlers
 
+  @CommandHandler
   public List<Event> handle(OpenTab command) throws TabIsOpen {
     info("handle %s command", command.getClass().getSimpleName());
 
@@ -56,6 +57,7 @@ public class Tab extends Aggregate {
     return asList(tabOpened);
   }
 
+  @CommandHandler
   public List<Event> handle(PlaceOrder command) throws TabNotOpen {
     info("handle %s command", command.getClass().getSimpleName());
 
@@ -81,6 +83,7 @@ public class Tab extends Aggregate {
     return events;
   }
 
+  @CommandHandler
   public List<Event> handle(MarkDrinksServed command) throws TabNotOpen, DrinksNotOutstanding {
     info("handle %s command", command.getClass().getSimpleName());
 
@@ -100,6 +103,7 @@ public class Tab extends Aggregate {
     return asList(event);
   }
 
+  @CommandHandler
   public List<Event> handle(CloseTab command) throws TabNotOpen, TabHasUnservedItems, MustPayEnough {
     info("handle %s command", command.getClass().getSimpleName());
 
@@ -127,6 +131,7 @@ public class Tab extends Aggregate {
 
   // event handlers
 
+  @EventHandler
   public void handle(TabOpened event) {
     info("handling %s event", event.getClass().getSimpleName());
 
@@ -136,6 +141,7 @@ public class Tab extends Aggregate {
     this.waiter = event.waiter;
   }
 
+  @EventHandler
   public void handle(DrinksOrdered event) {
     info("handling %s event", event.getClass().getSimpleName());
 
@@ -144,6 +150,7 @@ public class Tab extends Aggregate {
     }
   }
 
+  @EventHandler
   public void handle(FoodOrdered event) {
     info("handling %s event", event.getClass().getSimpleName());
 
@@ -151,12 +158,14 @@ public class Tab extends Aggregate {
 
   }
 
+  @EventHandler
   public void handle(DrinksServed event) {
     event.menuNumbers.stream()
         .map(outstandingDrinks::remove)
         .forEach(item -> servedItemsValue += item.price);
   }
 
+  @EventHandler
   public void handle(TabClosed event) {
     this.open = false;
   }

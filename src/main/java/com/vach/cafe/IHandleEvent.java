@@ -1,5 +1,9 @@
 package com.vach.cafe;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -13,6 +17,17 @@ import static java.util.Arrays.asList;
  * invoke appropriate handler method.
  */
 public interface IHandleEvent {
+
+  /**
+   * Annotation for EventHandler methods.
+   *
+   * EventHandlers must accept event or List of events, never throw exception,
+   * be accessible and return void.
+   */
+  @Target(ElementType.METHOD)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface EventHandler {
+  }
 
   default <E extends Event> List<E> handleEvent(List<E> events) {
     events.forEach(this::handleEvent);
@@ -32,6 +47,9 @@ public interface IHandleEvent {
 
     try {
       Method handler = currentClass.getDeclaredMethod("handle", eventClass);
+
+      assert handler.getAnnotation(EventHandler.class) != null;
+
       handler.invoke(this, event);
 
     } catch (Exception e) {

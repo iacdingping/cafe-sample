@@ -2,6 +2,10 @@ package com.vach.cafe;
 
 import com.vach.cafe.exception.CommandException;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -11,10 +15,21 @@ import static com.vach.cafe.util.Util.wtf;
 /**
  * Command handler interface.
  *
- * NOTE : default implementation will use reflection and rely on convention to
- * invoke appropriate handler method.
+ * NOTE : default implementation will use reflection and rely on convention to invoke appropriate handler method.
  */
 public interface IHandleCommand {
+
+
+  /**
+   * Annotation for CommandHandler methods.
+   *
+   * CommandHandlers must accept instance of Command, optionally can throw CommandException
+   * be accessible and return list of Events triggered during the executions.
+   */
+  @Target(ElementType.METHOD)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface CommandHandler {
+  }
 
   @SuppressWarnings("unchecked")
   default <C extends Command> List<Event> handleCommand(C command) throws CommandException {
@@ -26,13 +41,16 @@ public interface IHandleCommand {
 
     try {
       Method handler = currentClass.getDeclaredMethod("handle", commandClass);
+
+      assert handler.getAnnotation(CommandHandler.class) != null;
+
       return (List<Event>) handler.invoke(this, command);
-    } catch (InvocationTargetException e){
+    } catch (InvocationTargetException e) {
       Throwable cause = e.getCause();
 
-      if(cause instanceof CommandException){
+      if (cause instanceof CommandException) {
         throw (CommandException) cause;
-      }else{
+      } else {
         wtf(cause);
       }
 

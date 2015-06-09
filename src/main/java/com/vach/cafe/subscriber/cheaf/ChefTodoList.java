@@ -57,6 +57,7 @@ public class ChefTodoList implements IHandleEvent, ICanLog {
         .collect(Collectors.toList());
   }
 
+  @EventHandler
   public void handle(FoodOrdered event) {
     long tabId = event.id;
 
@@ -76,6 +77,7 @@ public class ChefTodoList implements IHandleEvent, ICanLog {
     }
   }
 
+  @EventHandler
   public void handle(FoodPrepared event) {
     long tabId = event.id;
 
