@@ -31,6 +31,9 @@ public interface IHandleCommand {
   @interface CommandHandler {
   }
 
+  /**
+   * Redirects command to appropriate handler method using reflection.
+   */
   @SuppressWarnings("unchecked")
   default <C extends Command> List<Event> handleCommand(C command) throws CommandException {
 
@@ -48,10 +51,11 @@ public interface IHandleCommand {
     } catch (InvocationTargetException e) {
       Throwable cause = e.getCause();
 
+      // handler method must only throw predefined CommandException
       if (cause instanceof CommandException) {
         throw (CommandException) cause;
       } else {
-        wtf(cause);
+        wtf(cause, "handler method shall never throw any exceptions except predefined ones");
       }
 
     } catch (Exception e) {

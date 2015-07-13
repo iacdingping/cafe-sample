@@ -3,9 +3,6 @@ package com.vach.cafe.util;
 import static java.lang.String.format;
 import static org.slf4j.LoggerFactory.getLogger;
 
-/**
- * Simple blocking logger implementation
- */
 public interface ICanLog {
 
   /**

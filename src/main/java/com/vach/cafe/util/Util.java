@@ -2,11 +2,9 @@ package com.vach.cafe.util;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.vach.cafe.util.Validator.allNotNull;
-import static com.vach.cafe.util.Validator.notNullOrEmpty;
-
 public class Util {
-  // wtf exceptions must never happen
+
+  // wtf (what a terrible failure) exceptions are never expected to happen, these are indicating implementation flaws
 
   public static <T> T wtf() {
     throw new IllegalStateException();
@@ -27,6 +25,7 @@ public class Util {
   public static <T> T wtf(Throwable exception, String message) {
     throw new IllegalStateException(message, exception);
   }
+
   public static <T> T wtf(Throwable exception, String message, Object... args) {
     throw new IllegalStateException(String.format(message, args), exception);
   }
@@ -50,17 +49,4 @@ public class Util {
       throw new IllegalStateException("unexpected cast", e);
     }
   }
-
-  // printing
-
-  public static void log(String msg) {
-    assert notNullOrEmpty(msg);
-    System.out.printf("%s : %s\n", Thread.currentThread().getName(), msg);
-  }
-
-  public static void logf(String format, Object... args) {
-    assert notNullOrEmpty(format) && allNotNull(args);
-    System.out.printf("%s : %s\n", Thread.currentThread().getName(), String.format(format, args));
-  }
-
 }

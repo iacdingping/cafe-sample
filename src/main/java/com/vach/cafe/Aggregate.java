@@ -16,7 +16,7 @@ public abstract class Aggregate implements IHandleCommand, IHandleEvent, ICanLog
   }
 
   /**
-   * Current version of aggregate
+   * Current version of aggregate (number of the latest event applied)
    */
   public int version() {
     return version;

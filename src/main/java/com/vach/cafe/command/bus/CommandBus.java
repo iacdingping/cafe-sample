@@ -9,8 +9,6 @@ import com.vach.cafe.Bus;
 import com.vach.cafe.Command;
 import com.vach.cafe.Dispatcher;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -25,7 +23,6 @@ public class CommandBus implements Bus<Command> {
     holder.message = cmd;
   };
 
-  @Autowired
   public CommandBus(Dispatcher<Command> dispatcher) {
     disruptor = new Disruptor<>(
         CommandHolder::new,

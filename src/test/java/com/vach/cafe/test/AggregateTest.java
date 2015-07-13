@@ -54,14 +54,6 @@ public class AggregateTest<T extends Aggregate> {
     };
   }
 
-//  protected Consumer<Object> then(Exception expected) {
-//
-//    return (a) -> {
-//      Exception actual = cast(a);
-//      assertEquals(expected, actual);
-//    };
-//  }
-
   protected Consumer<Object> thenFailWith(Class<? extends CommandException> type){
     return (a)-> assertTrue(type.isAssignableFrom(a.getClass()));
   }
