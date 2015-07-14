@@ -49,12 +49,16 @@ public class AggregateTest<T extends Aggregate> {
   protected Consumer<Object> then(Event... expected) {
 
     return (a) -> {
-        List<Event> actual = cast(a);
-        assertTrue(asList(expected).containsAll(actual));
+      List<Event> actual = cast(a);
+
+      for (Event event : expected) {
+        assertTrue("event "+event+" is not present in actual result", actual.contains(event));
+      }
+
     };
   }
 
-  protected Consumer<Object> thenFailWith(Class<? extends CommandException> type){
-    return (a)-> assertTrue(type.isAssignableFrom(a.getClass()));
+  protected Consumer<Object> thenFailWith(Class<? extends CommandException> type) {
+    return (a) -> assertTrue(type.isAssignableFrom(a.getClass()));
   }
 }
