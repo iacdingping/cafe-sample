@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import static com.vach.cafe.util.Util.wtf;
-import static java.util.Arrays.asList;
 
 /**
  * Event handler interface.
@@ -29,7 +28,7 @@ public interface IHandleEvent {
   @interface EventHandler {
   }
 
-  default <E extends Event> List<E> handleEvent(List<E> events) {
+  default <E extends Event> List<E> handleEvents(List<E> events) {
     events.forEach(this::handleEvent);
     return events;
   }
@@ -38,7 +37,7 @@ public interface IHandleEvent {
    * Apply single event.
    */
   @SuppressWarnings("unchecked")
-  default <E extends Event> List<E> handleEvent(E event) {
+  default <E extends Event> E handleEvent(E event) {
 
     Class currentClass = this.getClass();
     Class eventClass = event.getClass();
@@ -56,6 +55,6 @@ public interface IHandleEvent {
       wtf(e, "aggregate does not support events of type : %s", event.getClass());
     }
 
-    return asList(event);
+    return event;
   }
 }

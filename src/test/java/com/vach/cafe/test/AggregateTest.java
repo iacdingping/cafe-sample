@@ -31,7 +31,7 @@ public class AggregateTest<T extends Aggregate> {
 
   protected Supplier<T> given(T aggregate, Event... events) {
     return () -> {
-      aggregate.handleEvent(asList(events));
+      aggregate.handleEvents(asList(events));
       return aggregate;
     };
   }
