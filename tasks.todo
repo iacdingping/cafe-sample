@@ -1,0 +1,9 @@
+Cafe project :
+ ☐ Implement/test Java Fx client for application
+   ☐ Use websocket for communication
+   ☐ Use RxJava
+   ☐ Use Log4j2
+ ☐ Implement/test CommandBus
+ ☐ Implement/test EventBuss
+ ☐ Implement/test business logic for Waiters
+ ☐ Implement/test business logic for Chefs
