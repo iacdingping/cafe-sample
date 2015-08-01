@@ -15,8 +15,6 @@ import com.vach.cafe.server.exception.MustPayEnough;
 import com.vach.cafe.server.exception.TabHasUnservedItems;
 import com.vach.cafe.server.exception.TabIsOpen;
 import com.vach.cafe.server.exception.TabNotOpen;
-import com.vach.cafe.server.tab.OrderedItem;
-import com.vach.cafe.server.tab.Tab;
 import com.vach.cafe.server.test.AggregateTest;
 
 import org.junit.Before;
@@ -150,10 +148,10 @@ public class TabTests extends AggregateTest<Tab> {
             new DrinksOrdered(testId, testDrink1, testDrink2)
         ),
         when(
-            new MarkDrinksServed(testId, testDrink1.menuNumber, testDrink2.menuNumber)
+            new MarkDrinksServed(testId, testDrink1.menuNumber(), testDrink2.menuNumber())
         ),
         then(
-            new DrinksServed(testId, testDrink1.menuNumber, testDrink2.menuNumber)
+            new DrinksServed(testId, testDrink1.menuNumber(), testDrink2.menuNumber())
         )
     );
   }
@@ -167,7 +165,7 @@ public class TabTests extends AggregateTest<Tab> {
             new DrinksOrdered(testId, testDrink1)
         ),
         when(
-            new MarkDrinksServed(testId, testDrink2.menuNumber)
+            new MarkDrinksServed(testId, testDrink2.menuNumber())
         ),
         thenFailWith(
             DrinksNotOutstanding.class
@@ -182,10 +180,10 @@ public class TabTests extends AggregateTest<Tab> {
             new Tab(),
             new TabOpened(testId, testTable, testWaiter),
             new DrinksOrdered(testId, testDrink1),
-            new DrinksServed(testId, testDrink1.menuNumber)
+            new DrinksServed(testId, testDrink1.menuNumber())
         ),
         when(
-            new MarkDrinksServed(testId, testDrink1.menuNumber)
+            new MarkDrinksServed(testId, testDrink1.menuNumber())
         ),
         thenFailWith(
             DrinksNotOutstanding.class
@@ -200,7 +198,7 @@ public class TabTests extends AggregateTest<Tab> {
             new Tab(),
             new TabOpened(testId, testTable, testWaiter),
             new DrinksOrdered(testId, testDrink1),
-            new DrinksServed(testId, testDrink1.menuNumber)
+            new DrinksServed(testId, testDrink1.menuNumber())
         ),
         when(
             new CloseTab(testId, 3)
@@ -218,7 +216,7 @@ public class TabTests extends AggregateTest<Tab> {
             new Tab(),
             new TabOpened(testId, testTable, testWaiter),
             new DrinksOrdered(testId, testDrink1),
-            new DrinksServed(testId, testDrink1.menuNumber)
+            new DrinksServed(testId, testDrink1.menuNumber())
         ),
         when(
             new CloseTab(testId, 2)

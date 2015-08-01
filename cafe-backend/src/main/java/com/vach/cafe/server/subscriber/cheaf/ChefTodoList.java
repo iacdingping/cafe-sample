@@ -1,9 +1,9 @@
 package com.vach.cafe.server.subscriber.cheaf;
 
 import com.vach.cafe.server.IHandleEvent;
+import com.vach.cafe.server.aggregate.tab.OrderedItem;
 import com.vach.cafe.server.event.FoodOrdered;
 import com.vach.cafe.server.event.FoodPrepared;
-import com.vach.cafe.server.tab.OrderedItem;
 import com.vach.cafe.server.util.ICanLog;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class ChefTodoList implements IHandleEvent, ICanLog {
 
     // add orders to the list
     for (OrderedItem item : event.items) {
-      TodoListItem todoListItem = new TodoListItem(item.menuNumber, item.description);
+      TodoListItem todoListItem = new TodoListItem(item.menuNumber(), item.description());
       group.items.put(todoListItem.menuNumber, todoListItem);
     }
   }
@@ -87,7 +87,7 @@ public class ChefTodoList implements IHandleEvent, ICanLog {
 
     // remove prepared from todoList
     for (OrderedItem item : event.items) {
-      group.items.remove(item.menuNumber);
+      group.items.remove(item.menuNumber());
     }
   }
 }

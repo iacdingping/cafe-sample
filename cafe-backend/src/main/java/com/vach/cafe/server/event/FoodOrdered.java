@@ -2,7 +2,7 @@ package com.vach.cafe.server.event;
 
 
 import com.vach.cafe.server.Event;
-import com.vach.cafe.server.tab.OrderedItem;
+import com.vach.cafe.server.aggregate.tab.OrderedItem;
 
 import java.util.List;
 

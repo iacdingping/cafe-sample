@@ -1,4 +1,4 @@
-package com.vach.cafe.server.tab;
+package com.vach.cafe.server.aggregate.tab;
 
 import com.vach.cafe.server.Aggregate;
 import com.vach.cafe.server.Event;
@@ -163,7 +163,7 @@ public class Tab extends Aggregate {
     info("handle %s event", event.getClass().getSimpleName());
 
     for (OrderedItem item : event.items) {
-      outstandingDrinks.put(item.menuNumber, item);
+      outstandingDrinks.put(item.menuNumber(), item);
     }
   }
 
@@ -178,7 +178,7 @@ public class Tab extends Aggregate {
   public void handle(DrinksServed event) {
     event.menuNumbers.stream()
         .map(outstandingDrinks::remove)
-        .forEach(item -> servedItemsValue += item.price);
+        .forEach(item -> servedItemsValue += item.price());
   }
 
   @EventHandler

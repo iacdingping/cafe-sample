@@ -1,6 +1,6 @@
-package com.vach.cafe.server.tab.repo;
+package com.vach.cafe.server.repo;
 
-import com.vach.cafe.server.tab.Tab;
+import com.vach.cafe.server.aggregate.tab.Tab;
 
 import gnu.trove.map.hash.TLongObjectHashMap;
 
@@ -9,7 +9,7 @@ import java.lang.ref.SoftReference;
 import static com.vach.cafe.server.util.Util.wtf;
 
 //todo
-public class TabRepo implements com.vach.cafe.server.Repository<com.vach.cafe.server.tab.Tab>,
+public class TabRepo implements com.vach.cafe.server.Repository<Tab>,
                                 com.vach.cafe.server.util.ICanLog {
 
   private TLongObjectHashMap<Tab> map = new TLongObjectHashMap<>();
