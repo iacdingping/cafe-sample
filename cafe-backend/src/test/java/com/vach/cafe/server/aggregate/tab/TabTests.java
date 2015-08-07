@@ -15,19 +15,18 @@ import com.vach.cafe.server.exception.MustPayEnough;
 import com.vach.cafe.server.exception.TabHasUnservedItems;
 import com.vach.cafe.server.exception.TabIsOpen;
 import com.vach.cafe.server.exception.TabNotOpen;
-import com.vach.cafe.server.test.AggregateTest;
+import com.vach.cafe.test.AggregateTest;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/context.xml"})
+import java.util.UUID;
+
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = {"/context.xml"})
 public class TabTests extends AggregateTest<Tab> {
 
-  long testId;
+  UUID testId;
   int testTable;
   String testWaiter;
   OrderedItem testDrink1;
@@ -37,7 +36,7 @@ public class TabTests extends AggregateTest<Tab> {
 
   @Before
   public void setUp() {
-    testId = 5;
+    testId = UUID.randomUUID();
     testTable = 11;
     testWaiter = "john";
     testDrink1 = new OrderedItem(5, 2.45, true, "cola");

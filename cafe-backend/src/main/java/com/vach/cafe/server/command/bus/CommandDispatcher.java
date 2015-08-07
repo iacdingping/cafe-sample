@@ -5,20 +5,14 @@ import com.vach.cafe.server.Dispatcher;
 
 /**
  * CommandDispatcher does not execute any business logic itself,
- * instead it delegates command to appropriate aggregate, which
+ * instead it delegates command to appropriate handler (aggregate), which
  * encapsulates state and business logic associated with that state,
- * aggregate is the domain object tht will process the business logic.
+ * aggregate is the domain object that will process the business logic.
  */
 public class CommandDispatcher implements Dispatcher<Command> {
 
-
-  // dispatcher
-
   @Override
-  @SuppressWarnings("unchecked")
-  public void dispatch(com.vach.cafe.server.Command command) {
+  public void dispatch(Command command) {
 
   }
-
-  // TODO implement batch command processing
 }

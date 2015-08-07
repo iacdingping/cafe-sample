@@ -2,11 +2,13 @@ package com.vach.cafe.server;
 
 import com.vach.cafe.server.util.ObjectSupport;
 
+import java.util.UUID;
+
 public abstract class Event extends ObjectSupport implements Message {
 
-  public long id;
+  public UUID id;
 
-  public Event(long aggregateId) {
+  public Event(UUID aggregateId) {
     this.id = aggregateId;
   }
 

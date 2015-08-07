@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
 public class ChefTodoList implements IHandleEvent, ICanLog {
 
-  private final Map<Long, TodoListGroup> todoList = new HashMap<>();
+  private final Map<UUID, TodoListGroup> todoList = new HashMap<>();
 
   /**
    * Single item of chefs todoList.
@@ -36,11 +37,11 @@ public class ChefTodoList implements IHandleEvent, ICanLog {
    */
   public static class TodoListGroup {
 
-    public final long tab;
+    public final UUID tabID;
     public final Map<Integer, TodoListItem> items;
 
-    TodoListGroup(long tab, List<TodoListItem> items) {
-      this.tab = tab;
+    TodoListGroup(UUID tabID, List<TodoListItem> items) {
+      this.tabID = tabID;
       this.items = new HashMap<>();
       for (TodoListItem item : items) {
         this.items.put(item.menuNumber, item);
@@ -48,7 +49,7 @@ public class ChefTodoList implements IHandleEvent, ICanLog {
     }
 
     TodoListGroup copy() {
-      return new TodoListGroup(tab, new ArrayList<>(items.values()));
+      return new TodoListGroup(tabID, new ArrayList<>(items.values()));
     }
   }
 
@@ -60,7 +61,7 @@ public class ChefTodoList implements IHandleEvent, ICanLog {
 
   @EventHandler
   public void handle(FoodOrdered event) {
-    long tabId = event.id;
+    UUID tabId = event.id;
 
     // get the todoList for the tab
     TodoListGroup group = todoList.get(tabId);
@@ -80,7 +81,7 @@ public class ChefTodoList implements IHandleEvent, ICanLog {
 
   @EventHandler
   public void handle(FoodPrepared event) {
-    long tabId = event.id;
+    UUID tabId = event.id;
 
     // get the todoList for the tab
     TodoListGroup group = todoList.get(tabId);

@@ -35,7 +35,7 @@ public interface IHandleCommand {
    * Redirects command to appropriate handler method using reflection.
    */
   @SuppressWarnings("unchecked")
-  default <C extends com.vach.cafe.server.Command> List<com.vach.cafe.server.Event> handleCommand(
+  default <C extends Command> List<Event> handleCommand(
       C command) throws com.vach.cafe.server.exception.CommandException {
 
     Class currentClass = this.getClass();

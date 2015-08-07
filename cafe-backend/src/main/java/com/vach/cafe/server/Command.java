@@ -2,12 +2,13 @@ package com.vach.cafe.server;
 
 import com.vach.cafe.server.util.ObjectSupport;
 
-public abstract class Command extends ObjectSupport
-    implements com.vach.cafe.server.Message {
+import java.util.UUID;
 
-  public long id;
+public abstract class Command extends ObjectSupport implements Message {
 
-  public Command(long aggregateId) {
+  public UUID id;
+
+  public Command(UUID aggregateId) {
     this.id = aggregateId;
   }
 

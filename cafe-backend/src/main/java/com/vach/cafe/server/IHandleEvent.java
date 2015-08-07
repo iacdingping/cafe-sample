@@ -30,7 +30,7 @@ public interface IHandleEvent {
   @interface EventHandler {
   }
 
-  default <E extends com.vach.cafe.server.Event> List<E> handleEvents(List<E> events) {
+  default <E extends Event> List<E> handleEvents(List<E> events) {
     events.forEach(this::handleEvent);
     return events;
   }

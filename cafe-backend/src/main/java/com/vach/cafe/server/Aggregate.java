@@ -3,15 +3,17 @@ package com.vach.cafe.server;
 
 import com.vach.cafe.server.util.ICanLog;
 
+import java.util.UUID;
+
 public abstract class Aggregate implements IHandleCommand, IHandleEvent, ICanLog {
 
-  protected long id;
+  protected UUID id;
   protected int version;
 
   /**
    * Unique id of an aggregate
    */
-  public long id() {
+  public UUID id() {
     return id;
   }
 

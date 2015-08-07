@@ -25,7 +25,7 @@ public class CommandBus implements Bus<Command> {
         holder.message = cmd;
       };
 
-  public CommandBus(com.vach.cafe.server.Dispatcher<Command> dispatcher) {
+  public CommandBus(Dispatcher<Command> dispatcher) {
     disruptor = new Disruptor<>(
         CommandHolder::new,
         1024,
@@ -78,7 +78,9 @@ public class CommandBus implements Bus<Command> {
   private class CommandHolder {
 
     public String type;
-    //  public byte[] data; // Serialized Command (which when parsed will create Command instance)
+    public String data;
+
+//    public WakePoint wakePoint;
     // TODO serialization of commands
     public Command message;
   }
