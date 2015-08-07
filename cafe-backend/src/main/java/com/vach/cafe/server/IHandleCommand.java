@@ -9,8 +9,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static com.vach.cafe.server.util.Util.cast;
 import static com.vach.cafe.server.util.Util.wtf;
 
 
@@ -57,7 +60,7 @@ public interface IHandleCommand {
     try {
       Method handler = currentClass.getDeclaredMethod("handle", commandClass);
 
-      assert handler.getAnnotation(CommandHandler.class) != null;
+      assert handler.isAnnotationPresent(CommandHandler.class);
 
       return (List<Event>) handler.invoke(this, command);
     } catch (InvocationTargetException e) {
@@ -75,6 +78,19 @@ public interface IHandleCommand {
     }
 
     return wtf();
+  }
+
+  default List<Class<? extends Command>> getSupportedCommandTypes() {
+    Class currentClass = this.getClass();
+
+    List<Class<? extends Command>> result = new ArrayList<>();
+
+    Arrays.stream(currentClass.getMethods())
+        .filter(unfilteredMethod -> unfilteredMethod.isAnnotationPresent(CommandHandler.class))
+        .map(method -> method.getParameterTypes()[0])
+        .forEach(type -> result.add(cast(type)));
+
+    return result;
   }
 }
 

@@ -6,8 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static com.vach.cafe.server.util.Util.cast;
 import static com.vach.cafe.server.util.Util.wtf;
 
 
@@ -46,7 +49,7 @@ public interface IHandleEvent {
    * Apply single event.
    */
   @SuppressWarnings("unchecked")
-  default <E extends com.vach.cafe.server.Event> E handleEvent(E event) {
+  default <E extends Event> E handleEvent(E event) {
 
     Class currentClass = this.getClass();
     Class eventClass = event.getClass();
@@ -56,7 +59,7 @@ public interface IHandleEvent {
     try {
       Method handler = currentClass.getDeclaredMethod("handle", eventClass);
 
-      assert handler.getAnnotation(EventHandler.class) != null;
+      assert handler.isAnnotationPresent(EventHandler.class);
 
       handler.invoke(this, event);
 
@@ -65,5 +68,18 @@ public interface IHandleEvent {
     }
 
     return event;
+  }
+
+  default List<Class<? extends Event>> getSupportedEventTypes() {
+    Class currentClass = this.getClass();
+
+    List<Class<? extends Event>> result = new ArrayList<>();
+
+    Arrays.stream(currentClass.getMethods())
+        .filter(unfilteredMethod -> unfilteredMethod.isAnnotationPresent(EventHandler.class))
+        .map(method -> method.getParameterTypes()[0])
+        .forEach(type -> result.add(cast(type)));
+
+    return result;
   }
 }
