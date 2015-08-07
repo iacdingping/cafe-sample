@@ -1,6 +1,8 @@
 package com.vach.cafe.server;
 
 
+import com.vach.cafe.server.exception.CommandException;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -23,20 +25,29 @@ public interface IHandleCommand {
   /**
    * Annotation for CommandHandler methods.
    *
-   * CommandHandlers must accept instance of Command, optionally can throw CommandException
-   * be accessible and return list of Events triggered during the executions.
+   * CommandHandlers must accept instance of Command, optionally can throw CommandException be accessible and return list of Events
+   * triggered during the executions.
    */
   @Target(ElementType.METHOD)
   @Retention(RetentionPolicy.RUNTIME)
   @interface CommandHandler {
+
+  }
+
+  /**
+   * Annotation to declare all supported Command types.
+   */
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface Commands {
+    Class<? extends Command>[] value();
   }
 
   /**
    * Redirects command to appropriate handler method using reflection.
    */
   @SuppressWarnings("unchecked")
-  default <C extends Command> List<Event> handleCommand(
-      C command) throws com.vach.cafe.server.exception.CommandException {
+  default <C extends Command> List<Event> handleCommand(C command) throws CommandException {
 
     Class currentClass = this.getClass();
     Class commandClass = command.getClass();
@@ -48,13 +59,13 @@ public interface IHandleCommand {
 
       assert handler.getAnnotation(CommandHandler.class) != null;
 
-      return (List<com.vach.cafe.server.Event>) handler.invoke(this, command);
+      return (List<Event>) handler.invoke(this, command);
     } catch (InvocationTargetException e) {
       Throwable cause = e.getCause();
 
       // handler method must only throw predefined CommandException
-      if (cause instanceof com.vach.cafe.server.exception.CommandException) {
-        throw (com.vach.cafe.server.exception.CommandException) cause;
+      if (cause instanceof CommandException) {
+        throw (CommandException) cause;
       } else {
         wtf(cause, "handler method shall never throw any exceptions except predefined ones");
       }

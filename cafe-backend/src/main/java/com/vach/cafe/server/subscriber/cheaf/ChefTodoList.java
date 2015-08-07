@@ -18,41 +18,6 @@ public class ChefTodoList implements IHandleEvent, ICanLog {
 
   private final Map<UUID, TodoListGroup> todoList = new HashMap<>();
 
-  /**
-   * Single item of chefs todoList.
-   */
-  public static class TodoListItem {
-
-    public final int menuNumber;
-    public final String description;
-
-    TodoListItem(int menuNumber, String description) {
-      this.menuNumber = menuNumber;
-      this.description = description;
-    }
-  }
-
-  /**
-   * Grouped orders of single Tab.
-   */
-  public static class TodoListGroup {
-
-    public final UUID tabID;
-    public final Map<Integer, TodoListItem> items;
-
-    TodoListGroup(UUID tabID, List<TodoListItem> items) {
-      this.tabID = tabID;
-      this.items = new HashMap<>();
-      for (TodoListItem item : items) {
-        this.items.put(item.menuNumber, item);
-      }
-    }
-
-    TodoListGroup copy() {
-      return new TodoListGroup(tabID, new ArrayList<>(items.values()));
-    }
-  }
-
   public List<TodoListGroup> getTodoList() {
     return todoList.values().stream()
         .map(TodoListGroup::copy)

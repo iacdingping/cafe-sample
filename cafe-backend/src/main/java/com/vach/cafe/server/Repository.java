@@ -1,15 +1,10 @@
 package com.vach.cafe.server;
 
-public interface Repository<T> {
+import java.util.Optional;
 
-  /**
-   * Get aggregate instance from memory, or build latest version from event store, or create if does not exist.
-   */
-  T get(long id);
+public interface Repository<K,V> {
 
-  /**
-   * Make aggregate eligible for garbage collection
-   */
-  void remove(long id);
+  V get();
 
+  Optional<V> get(K key);
 }

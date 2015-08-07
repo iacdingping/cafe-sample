@@ -48,7 +48,7 @@ public class TabTests extends AggregateTest<Tab> {
   @Test
   public void canOpenNewTab() {
     test(
-        given(new Tab()),
+        given(new Tab(testId)),
         when(
             new OpenTab(testId, testTable, testWaiter)
         ),
@@ -62,7 +62,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void canNotOpenAlreadyOpenedTab() {
     test(
         given(
-            new Tab(),
+            new Tab(testId),
             new TabOpened(testId, testTable, testWaiter)
         ),
         when(
@@ -78,7 +78,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void cannotPlaceOrderWithUnopenedTab() {
     test(
         given(
-            new Tab()
+            new Tab(testId)
         ),
         when(
             new PlaceOrder(testId, testDrink1)
@@ -93,7 +93,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void canPlaceDrinksOrder() {
     test(
         given(
-            new Tab(),
+            new Tab(testId),
             new TabOpened(testId, testTable, testWaiter)
         ),
         when(
@@ -109,7 +109,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void canPlaceFoodOrder() {
     test(
         given(
-            new Tab(),
+            new Tab(testId),
             new TabOpened(testId, testTable, testWaiter)
         ),
         when(
@@ -125,7 +125,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void canPlaceFoodAndDrinkOrder() {
     test(
         given(
-            new Tab(),
+            new Tab(testId),
             new TabOpened(testId, testTable, testWaiter)
         ),
         when(
@@ -142,7 +142,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void orderedDrinksCanBeServed() {
     test(
         given(
-            new Tab(),
+            new Tab(testId),
             new TabOpened(testId, testTable, testWaiter),
             new DrinksOrdered(testId, testDrink1, testDrink2)
         ),
@@ -159,7 +159,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void cannotServeUnorderedDrink() {
     test(
         given(
-            new Tab(),
+            new Tab(testId),
             new TabOpened(testId, testTable, testWaiter),
             new DrinksOrdered(testId, testDrink1)
         ),
@@ -176,7 +176,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void canNotServeAnOrderedDrinkTwice() {
     test(
         given(
-            new Tab(),
+            new Tab(testId),
             new TabOpened(testId, testTable, testWaiter),
             new DrinksOrdered(testId, testDrink1),
             new DrinksServed(testId, testDrink1.menuNumber())
@@ -194,7 +194,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void canCloseTabWithTip() {
     test(
         given(
-            new Tab(),
+            new Tab(testId),
             new TabOpened(testId, testTable, testWaiter),
             new DrinksOrdered(testId, testDrink1),
             new DrinksServed(testId, testDrink1.menuNumber())
@@ -212,7 +212,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void mustPayEnough() {
     test(
         given(
-            new Tab(),
+            new Tab(testId),
             new TabOpened(testId, testTable, testWaiter),
             new DrinksOrdered(testId, testDrink1),
             new DrinksServed(testId, testDrink1.menuNumber())
@@ -230,7 +230,7 @@ public class TabTests extends AggregateTest<Tab> {
   public void cantCloseTabUntilAllOrdersAreServed() {
     test(
         given(
-            new Tab(),
+            new Tab(testId),
             new TabOpened(testId, testTable, testWaiter),
             new DrinksOrdered(testId, testDrink1)
         ),

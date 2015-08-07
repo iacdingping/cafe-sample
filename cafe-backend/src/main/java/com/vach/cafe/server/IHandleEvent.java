@@ -30,6 +30,13 @@ public interface IHandleEvent {
   @interface EventHandler {
   }
 
+  /**
+   * Annotation to declare all supported event types.
+   */
+  @interface Events {
+    Class<? extends Event>[] value();
+  }
+
   default <E extends Event> List<E> handleEvents(List<E> events) {
     events.forEach(this::handleEvent);
     return events;
