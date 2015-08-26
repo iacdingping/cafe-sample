@@ -1,16 +1,15 @@
 package com.vach.cafe.server;
 
 
+import com.vach.cafe.server.util.Util;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static com.vach.cafe.server.util.Util.cast;
 import static com.vach.cafe.server.util.Util.wtf;
 
 
@@ -31,13 +30,6 @@ public interface IHandleEvent {
   @Target(ElementType.METHOD)
   @Retention(RetentionPolicy.RUNTIME)
   @interface EventHandler {
-  }
-
-  /**
-   * Annotation to declare all supported event types.
-   */
-  @interface Events {
-    Class<? extends Event>[] value();
   }
 
   default <E extends Event> List<E> handleEvents(List<E> events) {
@@ -71,15 +63,6 @@ public interface IHandleEvent {
   }
 
   default List<Class<? extends Event>> getSupportedEventTypes() {
-    Class currentClass = this.getClass();
-
-    List<Class<? extends Event>> result = new ArrayList<>();
-
-    Arrays.stream(currentClass.getMethods())
-        .filter(unfilteredMethod -> unfilteredMethod.isAnnotationPresent(EventHandler.class))
-        .map(method -> method.getParameterTypes()[0])
-        .forEach(type -> result.add(cast(type)));
-
-    return result;
+    return Util.getSupportedEventTypes(this.getClass());
   }
 }

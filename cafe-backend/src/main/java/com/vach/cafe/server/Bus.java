@@ -1,7 +1,9 @@
 package com.vach.cafe.server;
 
-public interface Bus<T extends Message> {
+public interface Bus {
 
-  void publish(T message);
+  void publish(String type, Message message);
+
+  void publish(String type, byte[] data);
 
 }

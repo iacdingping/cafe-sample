@@ -1,5 +1,13 @@
 package com.vach.cafe.server.util;
 
+import com.vach.cafe.server.Command;
+import com.vach.cafe.server.Event;
+import com.vach.cafe.server.IHandleCommand.CommandHandler;
+import com.vach.cafe.server.IHandleEvent.EventHandler;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Util {
@@ -48,5 +56,27 @@ public class Util {
     } catch (ClassCastException e) {
       throw new IllegalStateException("unexpected cast", e);
     }
+  }
+
+  public static List<Class<? extends Command>> getSupportedCommandTypes(Class currentClass) {
+    List<Class<? extends Command>> result = new ArrayList<>();
+
+    Arrays.stream(currentClass.getMethods())
+        .filter(unfilteredMethod -> unfilteredMethod.isAnnotationPresent(CommandHandler.class))
+        .map(method -> method.getParameterTypes()[0])
+        .forEach(type -> result.add(cast(type)));
+
+    return result;
+  }
+
+  public static List<Class<? extends Event>> getSupportedEventTypes(Class currentClass) {
+    List<Class<? extends Event>> result = new ArrayList<>();
+
+    Arrays.stream(currentClass.getMethods())
+        .filter(unfilteredMethod -> unfilteredMethod.isAnnotationPresent(EventHandler.class))
+        .map(method -> method.getParameterTypes()[0])
+        .forEach(type -> result.add(cast(type)));
+
+    return result;
   }
 }

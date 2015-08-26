@@ -1,88 +1,64 @@
 package com.vach.cafe.server.command.bus;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
-import com.lmax.disruptor.EventHandler;
-import com.lmax.disruptor.EventTranslatorOneArg;
+import com.lmax.disruptor.EventTranslatorTwoArg;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.vach.cafe.server.Bus;
-import com.vach.cafe.server.Command;
-import com.vach.cafe.server.Dispatcher;
+import com.vach.cafe.server.Message;
+import com.vach.cafe.server.bus.MessageWrapper;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executors;
 
-import static com.vach.cafe.server.util.Util.wtf;
+public class CommandBus implements Bus {
 
-public class CommandBus implements Bus<Command> {
+  private final Disruptor<MessageWrapper> disruptor;
 
-  private final Disruptor<CommandHolder> disruptor;
+//  @Autowired
+//  CommandMarshaller marshaller;
+//  @Autowired
+//  CommandUnmarshaller unmarshaller;
+//  @Autowired
+//  CommandJournaller journaller;
+//  @Autowired
+//  CommandReplicator replicator;
+//  @Autowired
+//  CommandExecutor executor;
 
-  private final EventTranslatorOneArg<CommandHolder, Command>
-      commandToCommandHolderTranslator =
-      (holder, sequence, cmd) -> {
-        holder.message = cmd;
-      };
 
-  public CommandBus(Dispatcher<Command> dispatcher) {
+  private final EventTranslatorTwoArg<MessageWrapper, String, Object>
+      objectTranslator = (holder, sequence, type, object) -> {
+    holder.type = type;
+    holder.object = object;
+  };
+
+  private final EventTranslatorTwoArg<MessageWrapper, String, byte[]>
+      blobTranslator = (holder, sequence, type, blob) -> {
+    holder.type = type;
+    holder.blob = blob;
+  };
+
+  public CommandBus() {
     disruptor = new Disruptor<>(
-        CommandHolder::new,
+        MessageWrapper::new,
         1024,
         Executors.newCachedThreadPool(),
         ProducerType.MULTI,
         new BlockingWaitStrategy()
     );
 
-    disruptor.handleEventsWith(new CommandDelegate(dispatcher));
+//    disruptor.handleEventsWith();
     disruptor.start();
   }
 
   @Override
-  public void publish(Command command) {
-    disruptor.publishEvent(commandToCommandHolderTranslator, command);
-    wtf();
+  public void publish(String type, Message message) {
+    disruptor.getRingBuffer().publishEvent(objectTranslator, type, message);
   }
 
-  /**
-   * Adapter for Dispatcher
-   */
-  private class CommandDelegate implements EventHandler<CommandHolder> {
-
-    private final Dispatcher<Command> dispatcher;
-    private final List<Command> batch = new ArrayList<>();
-
-    public CommandDelegate(Dispatcher<Command> dispatcher) {
-      this.dispatcher = dispatcher;
-    }
-
-
-    @Override
-    public void onEvent(CommandHolder holder, long sequence, boolean endOfBatch) throws Exception {
-      if (endOfBatch) {
-        if (batch.isEmpty()) {
-          dispatcher.dispatch(holder.message);
-        } else {
-          dispatcher.dispatch(batch);
-          batch.clear();
-        }
-      } else {
-        batch.add(holder.message);
-      }
-    }
-  }
-
-  /**
-   * Single cell of data in ring buffer
-   */
-  private class CommandHolder {
-
-    public String type;
-    public String data;
-
-//    public WakePoint wakePoint;
-    // TODO serialization of commands
-    public Command message;
+  @Override
+  public void publish(String type, byte[] blob) {
+    disruptor.getRingBuffer().publishEvent(blobTranslator, type, blob);
   }
 
 }

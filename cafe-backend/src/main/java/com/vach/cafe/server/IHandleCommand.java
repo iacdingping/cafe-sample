@@ -2,6 +2,7 @@ package com.vach.cafe.server;
 
 
 import com.vach.cafe.server.exception.CommandException;
+import com.vach.cafe.server.util.Util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,11 +10,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static com.vach.cafe.server.util.Util.cast;
 import static com.vach.cafe.server.util.Util.wtf;
 
 
@@ -35,15 +33,6 @@ public interface IHandleCommand {
   @Retention(RetentionPolicy.RUNTIME)
   @interface CommandHandler {
 
-  }
-
-  /**
-   * Annotation to declare all supported Command types.
-   */
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  @interface Commands {
-    Class<? extends Command>[] value();
   }
 
   /**
@@ -81,16 +70,7 @@ public interface IHandleCommand {
   }
 
   default List<Class<? extends Command>> getSupportedCommandTypes() {
-    Class currentClass = this.getClass();
-
-    List<Class<? extends Command>> result = new ArrayList<>();
-
-    Arrays.stream(currentClass.getMethods())
-        .filter(unfilteredMethod -> unfilteredMethod.isAnnotationPresent(CommandHandler.class))
-        .map(method -> method.getParameterTypes()[0])
-        .forEach(type -> result.add(cast(type)));
-
-    return result;
+    return Util.getSupportedCommandTypes(this.getClass());
   }
 }
 

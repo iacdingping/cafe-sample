@@ -1,10 +1,8 @@
 package com.vach.cafe.server;
 
-import java.util.Optional;
+public interface Repository<K, V> {
 
-public interface Repository<K,V> {
+  V create(K key);
 
-  V get();
-
-  Optional<V> get(K key);
+  V get(K key);
 }

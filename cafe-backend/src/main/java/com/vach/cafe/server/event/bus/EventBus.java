@@ -3,12 +3,10 @@ package com.vach.cafe.server.event.bus;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import com.vach.cafe.server.Bus;
-import com.vach.cafe.server.Event;
 
 import java.util.concurrent.Executors;
 
-public class EventBus implements Bus<Event> {
+public class EventBus /*implements Bus<Event>*/ {
 
   private final Disruptor<EventHolder> disruptor;
 
@@ -25,10 +23,10 @@ public class EventBus implements Bus<Event> {
     disruptor.start();
   }
 
-  @Override
-  public void publish(Event command) {
-//    disruptor.publishEvent(command);
-  }
+//  @Override
+//  public void publish(Event command) {
+////    disruptor.publishEvent(command);
+//  }
 
 
   /**

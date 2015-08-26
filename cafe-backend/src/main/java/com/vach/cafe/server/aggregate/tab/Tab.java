@@ -2,8 +2,6 @@ package com.vach.cafe.server.aggregate.tab;
 
 import com.vach.cafe.server.Aggregate;
 import com.vach.cafe.server.Event;
-import com.vach.cafe.server.IHandleCommand.Commands;
-import com.vach.cafe.server.IHandleEvent.Events;
 import com.vach.cafe.server.command.CloseTab;
 import com.vach.cafe.server.command.MarkDrinksServed;
 import com.vach.cafe.server.command.OpenTab;
@@ -28,20 +26,6 @@ import java.util.UUID;
 import static com.vach.cafe.server.util.Validator.notNull;
 import static java.util.Arrays.asList;
 
-
-@Commands({
-    OpenTab.class,
-    PlaceOrder.class,
-    MarkDrinksServed.class,
-    CloseTab.class
-})
-@Events({
-    TabClosed.class,
-    DrinksOrdered.class,
-    FoodOrdered.class,
-    DrinksServed.class,
-    TabClosed.class
-})
 public class Tab extends Aggregate {
 
   boolean open;

@@ -1,7 +1,7 @@
 package com.vach.cafe.server.command.bus;
 
 import com.vach.cafe.server.Command;
-import com.vach.cafe.server.Dispatcher;
+import com.vach.cafe.server.bus.Dispatcher;
 
 /**
  * CommandDispatcher does not execute any business logic itself,

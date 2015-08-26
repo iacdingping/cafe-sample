@@ -1,6 +1,6 @@
 package com.vach.cafe.server.event.bus;
 
-import com.vach.cafe.server.Dispatcher;
+import com.vach.cafe.server.bus.Dispatcher;
 import com.vach.cafe.server.Event;
 
 /**
