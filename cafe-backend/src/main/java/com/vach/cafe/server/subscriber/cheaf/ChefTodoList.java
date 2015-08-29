@@ -1,10 +1,10 @@
 package com.vach.cafe.server.subscriber.cheaf;
 
-import com.vach.cafe.server.IHandleEvent;
+import com.vach.cafe.server.IApplyEvent;
 import com.vach.cafe.server.aggregate.tab.OrderedItem;
 import com.vach.cafe.server.event.FoodOrdered;
 import com.vach.cafe.server.event.FoodPrepared;
-import com.vach.cafe.server.util.ICanLog;
+import com.vach.cafe.util.ICanLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 
-public class ChefTodoList implements IHandleEvent, ICanLog {
+public class ChefTodoList implements IApplyEvent, ICanLog {
 
   private final Map<UUID, TodoListGroup> todoList = new HashMap<>();
 

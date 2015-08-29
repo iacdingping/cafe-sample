@@ -1,7 +1,7 @@
 package com.vach.cafe.server;
 
 
-import com.vach.cafe.server.util.Util;
+import com.vach.cafe.util.Util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +10,8 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import static com.vach.cafe.server.util.Util.wtf;
+import static com.vach.cafe.util.Util.wtf;
+
 
 
 /**
@@ -19,7 +20,7 @@ import static com.vach.cafe.server.util.Util.wtf;
  * NOTE : default implementation will use reflection and rely on convention to
  * invoke appropriate handler method.
  */
-public interface IHandleEvent {
+public interface IApplyEvent {
 
   /**
    * Annotation for EventHandler methods.
@@ -32,8 +33,8 @@ public interface IHandleEvent {
   @interface EventHandler {
   }
 
-  default <E extends Event> List<E> handleEvents(List<E> events) {
-    events.forEach(this::handleEvent);
+  default <E extends Event> List<E> applyEvents(List<E> events) {
+    events.forEach(this::applyEvent);
     return events;
   }
 
@@ -41,7 +42,7 @@ public interface IHandleEvent {
    * Apply single event.
    */
   @SuppressWarnings("unchecked")
-  default <E extends Event> E handleEvent(E event) {
+  default <E extends Event> E applyEvent(E event) {
 
     Class currentClass = this.getClass();
     Class eventClass = event.getClass();
@@ -49,7 +50,7 @@ public interface IHandleEvent {
     // find method accepting event
 
     try {
-      Method handler = currentClass.getDeclaredMethod("handle", eventClass);
+      Method handler = currentClass.getDeclaredMethod("apply", eventClass);
 
       assert handler.isAnnotationPresent(EventHandler.class);
 
@@ -62,7 +63,7 @@ public interface IHandleEvent {
     return event;
   }
 
-  default List<Class<? extends Event>> getSupportedEventTypes() {
+  default List<Class<? extends Event>> getApplicableEventTypes() {
     return Util.getSupportedEventTypes(this.getClass());
   }
 }

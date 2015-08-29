@@ -15,4 +15,9 @@ public class OpenTab extends Command {
     this.waiter = waiter;
   }
 
+  public OpenTab(int tableNumber, String waiter) {
+    super(UUID.randomUUID());
+    this.tableNumber = tableNumber;
+    this.waiter = waiter;
+  }
 }

@@ -1,9 +1,9 @@
-package com.vach.cafe.server.util;
+package com.vach.cafe.util;
 
 
 import org.junit.Test;
 
-import static com.vach.cafe.server.util.Util.bearSleep;
+import static com.vach.cafe.util.Util.bearSleep;
 
 public class WakePointTest implements ICanLog {
 

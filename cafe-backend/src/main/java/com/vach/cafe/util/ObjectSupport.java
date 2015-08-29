@@ -1,4 +1,4 @@
-package com.vach.cafe.server.util;
+package com.vach.cafe.util;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

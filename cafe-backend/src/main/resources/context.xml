@@ -9,21 +9,16 @@
 
     <context:annotation-config/>
 
-    <!-- GLOBAL COMPONENTS -->
-
     <!-- message buses-->
     <!--<bean class="com.vach.cafe.command.bus.CommandBus"/>-->
     <!--<bean class="com.vach.cafe.event.bus.EventBus"/>-->
 
-    <!--&lt;!&ndash; dispatchers &ndash;&gt;-->
+    <!-- dispatchers -->
     <!--<bean class="com.vach.cafe.command.bus.CommandDispatcher"/>-->
     <!--<bean class="com.vach.cafe.event.bus.EventDispatcher"/>-->
 
-
-    <!--&lt;!&ndash; TAB AGGREGATE COMPONENTS &ndash;&gt;-->
-
-    <!--<bean class="com.vach.cafe.aggregate.tab.Tab" scope="prototype"/>-->
-    <!--<bean class="com.vach.cafe.aggregate.tab.repo.TabRepo"/>-->
+    <!-- repositories -->
+    <bean class="com.vach.cafe.server.aggregate.tab.repo.TabRepo"/>
 
 
 </beans>

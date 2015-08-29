@@ -1,9 +1,9 @@
-package com.vach.cafe.server.util;
+package com.vach.cafe.util;
 
 import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
-import static com.vach.cafe.server.util.Util.cast;
+import static com.vach.cafe.util.Util.cast;
 
 /**
  * WakePoint is designed to block producer thread wile consumer sets the outcome.
@@ -11,6 +11,7 @@ import static com.vach.cafe.server.util.Util.cast;
  * consumers to complete the request and set the result. Instance of WakePoint
  * is not reusable, once completed it cannot be modified.
  */
+@Deprecated
 public class WakePoint implements ICanLog {
   boolean isComplete;
   boolean isSuccess;

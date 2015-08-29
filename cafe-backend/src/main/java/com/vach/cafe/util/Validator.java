@@ -1,4 +1,4 @@
-package com.vach.cafe.server.util;
+package com.vach.cafe.util;
 
 import java.util.Collection;
 

@@ -1,11 +1,11 @@
 package com.vach.cafe.server;
 
 
-import com.vach.cafe.server.util.ICanLog;
+import com.vach.cafe.util.ICanLog;
 
 import java.util.UUID;
 
-public abstract class Aggregate implements IHandleCommand, IHandleEvent, ICanLog {
+public abstract class Aggregate implements IHandleCommand, IApplyEvent, ICanLog {
 
   protected UUID id;
   protected int version;

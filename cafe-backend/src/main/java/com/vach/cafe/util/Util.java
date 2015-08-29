@@ -1,9 +1,9 @@
-package com.vach.cafe.server.util;
+package com.vach.cafe.util;
 
 import com.vach.cafe.server.Command;
 import com.vach.cafe.server.Event;
 import com.vach.cafe.server.IHandleCommand.CommandHandler;
-import com.vach.cafe.server.IHandleEvent.EventHandler;
+import com.vach.cafe.server.IApplyEvent.EventHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;

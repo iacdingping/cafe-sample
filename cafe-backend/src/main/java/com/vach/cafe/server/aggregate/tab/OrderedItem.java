@@ -1,7 +1,7 @@
 package com.vach.cafe.server.aggregate.tab;
 
 import com.vach.cafe.server.ValueType;
-import com.vach.cafe.server.util.ObjectSupport;
+import com.vach.cafe.util.ObjectSupport;
 
 @ValueType
 public class OrderedItem extends ObjectSupport {

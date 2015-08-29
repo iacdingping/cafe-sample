@@ -2,7 +2,7 @@ package com.vach.cafe.server;
 
 
 import com.vach.cafe.server.exception.CommandException;
-import com.vach.cafe.server.util.Util;
+import com.vach.cafe.util.Util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import static com.vach.cafe.server.util.Util.wtf;
+import static com.vach.cafe.util.Util.wtf;
 
 
 /**
@@ -21,7 +21,6 @@ import static com.vach.cafe.server.util.Util.wtf;
  * NOTE : default implementation will use reflection and rely on convention to invoke appropriate handler method.
  */
 public interface IHandleCommand {
-
 
   /**
    * Annotation for CommandHandler methods.
@@ -69,7 +68,7 @@ public interface IHandleCommand {
     return wtf();
   }
 
-  default List<Class<? extends Command>> getSupportedCommandTypes() {
+  default List<Class<? extends Command>> getApplicableCommandTypes() {
     return Util.getSupportedCommandTypes(this.getClass());
   }
 }

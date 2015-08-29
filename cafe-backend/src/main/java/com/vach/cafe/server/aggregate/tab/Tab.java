@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.vach.cafe.server.util.Validator.notNull;
+import static com.vach.cafe.util.Validator.notNull;
 import static java.util.Arrays.asList;
 
 public class Tab extends Aggregate {
@@ -58,7 +58,7 @@ public class Tab extends Aggregate {
     // apply
 
     return asList(
-        handleEvent(
+        applyEvent(
             new TabOpened(
                 command.id,
                 command.tableNumber,
@@ -85,7 +85,7 @@ public class Tab extends Aggregate {
     List<OrderedItem> drinkOrders = command.getDrinkOrders();
     if (!drinkOrders.isEmpty()) {
       events.add(
-          handleEvent(
+          applyEvent(
               new DrinksOrdered(command.id, drinkOrders)
           )
       );
@@ -94,7 +94,7 @@ public class Tab extends Aggregate {
     List<OrderedItem> foodOrders = command.getFoodOrders();
     if (!foodOrders.isEmpty()) {
       events.add(
-          handleEvent(
+          applyEvent(
               new FoodOrdered(command.id, foodOrders)
           )
       );
@@ -121,7 +121,7 @@ public class Tab extends Aggregate {
 
     // apply
 
-    return asList(handleEvent(
+    return asList(applyEvent(
         new DrinksServed(command.id, command.menuNumbers)
     ));
   }
@@ -143,7 +143,7 @@ public class Tab extends Aggregate {
       throw new MustPayEnough();
     }
 
-    return asList(handleEvent(
+    return asList(applyEvent(
         new TabClosed(
             command.id,
             command.amountPaid,
@@ -156,7 +156,7 @@ public class Tab extends Aggregate {
   // event handlers
 
   @EventHandler
-  public void handle(TabOpened event) {
+  public void apply(TabOpened event) {
     info("handle %s event", event.getClass().getSimpleName());
 
     open = true;
@@ -166,7 +166,7 @@ public class Tab extends Aggregate {
   }
 
   @EventHandler
-  public void handle(DrinksOrdered event) {
+  public void apply(DrinksOrdered event) {
     info("handle %s event", event.getClass().getSimpleName());
 
     for (OrderedItem item : event.items) {
@@ -175,21 +175,21 @@ public class Tab extends Aggregate {
   }
 
   @EventHandler
-  public void handle(FoodOrdered event) {
+  public void apply(FoodOrdered event) {
     info("handle %s event", event.getClass().getSimpleName());
 
     this.outstandingFood.addAll(event.items);
   }
 
   @EventHandler
-  public void handle(DrinksServed event) {
+  public void apply(DrinksServed event) {
     event.menuNumbers.stream()
         .map(outstandingDrinks::remove)
         .forEach(item -> servedItemsValue += item.price());
   }
 
   @EventHandler
-  public void handle(TabClosed event) {
+  public void apply(TabClosed event) {
     this.open = false;
   }
 

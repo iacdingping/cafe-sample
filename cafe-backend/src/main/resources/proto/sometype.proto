@@ -1,0 +1,10 @@
+package com.vach.cafe;
+
+option java_package = "com.experiment";
+option java_outer_classname = "SometypeProto";
+
+message Sometype {
+    required bool boolean = 1;
+    required int32 integer = 2;
+    optional string text = 3;
+}

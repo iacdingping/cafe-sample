@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.vach.cafe.server.util.Util.cast;
+import static com.vach.cafe.util.Util.cast;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertTrue;
 
@@ -31,7 +31,7 @@ public class AggregateTest<T extends Aggregate> {
 
   protected Supplier<T> given(T aggregate, Event... events) {
     return () -> {
-      aggregate.handleEvents(asList(events));
+      aggregate.applyEvents(asList(events));
       return aggregate;
     };
   }

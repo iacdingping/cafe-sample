@@ -1,4 +1,4 @@
-package com.vach.cafe.server.util;
+package com.vach.cafe.util;
 
 /**
  * Reusable callback holder for single producer to subscribe for completion. After completion it automatically resets to blank state.
@@ -8,6 +8,7 @@ package com.vach.cafe.server.util;
  *
  * TODO improve and support multiple callbacks
  */
+@Deprecated
 public class CallbackRegister implements ICanLog {
 
   private boolean completed;
@@ -40,10 +41,11 @@ public class CallbackRegister implements ICanLog {
 
   /**
    * Puts thread in WAIT state till command is explicitly completed trough either success(..) or fail(..), after its completed waiting
-   * thread will execute the callback. IMPORTANT : all command handlers shall complete command.
+   * thread will execute the callback.
+   *
+   * IMPORTANT : all command handlers shall complete command.
    */
   public synchronized void waitForResult() {
-
     try {
 
       // wait for completion

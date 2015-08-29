@@ -5,8 +5,8 @@ import com.vach.cafe.server.Event;
 import com.vach.cafe.server.IHandleCommand;
 import com.vach.cafe.server.Repository;
 import com.vach.cafe.server.aggregate.tab.Tab;
-import com.vach.cafe.server.util.ICanLog;
-import com.vach.cafe.server.util.Util;
+import com.vach.cafe.util.ICanLog;
+import com.vach.cafe.util.Util;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +54,7 @@ public class TabRepo implements Repository<UUID, Tab>, IHandleCommand, ICanLog {
   }
 
   @Override
-  public List<Class<? extends Command>> getSupportedCommandTypes() {
+  public List<Class<? extends Command>> getApplicableCommandTypes() {
     return Util.getSupportedCommandTypes(Tab.class);
   }
 }

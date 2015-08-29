@@ -1,9 +1,9 @@
 package com.vach.cafe.server.subscriber.waiter;
 
-import com.vach.cafe.server.IHandleEvent;
-import com.vach.cafe.server.util.ICanLog;
+import com.vach.cafe.server.IApplyEvent;
+import com.vach.cafe.util.ICanLog;
 
-public class WaiterTodoList implements IHandleEvent, ICanLog {
+public class WaiterTodoList implements IApplyEvent, ICanLog {
 
 
 }

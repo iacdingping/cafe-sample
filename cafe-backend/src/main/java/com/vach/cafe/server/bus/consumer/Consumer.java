@@ -35,10 +35,13 @@ public abstract class Consumer implements EventHandler<MessageWrapper> {
       }
   }
 
+  /**
+   * Process single message
+   */
   protected abstract void consume(MessageWrapper element);
 
   /**
-   * Default implementation of batch processing, if necessary this method shall be overrided
+   * Default implementation of batch processing, if necessary this method shall be overridden
    */
   protected void consume(Collection<MessageWrapper> batch){
     batch.forEach(this::consume);

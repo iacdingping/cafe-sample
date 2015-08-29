@@ -1,4 +1,4 @@
-package com.vach.cafe.server.command.bus;
+package com.vach.cafe.server.bus;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.EventTranslatorTwoArg;
@@ -6,25 +6,12 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.vach.cafe.server.Bus;
 import com.vach.cafe.server.Message;
-import com.vach.cafe.server.bus.MessageWrapper;
 
 import java.util.concurrent.Executors;
 
 public class CommandBus implements Bus {
 
   private final Disruptor<MessageWrapper> disruptor;
-
-//  @Autowired
-//  CommandMarshaller marshaller;
-//  @Autowired
-//  CommandUnmarshaller unmarshaller;
-//  @Autowired
-//  CommandJournaller journaller;
-//  @Autowired
-//  CommandReplicator replicator;
-//  @Autowired
-//  CommandExecutor executor;
-
 
   private final EventTranslatorTwoArg<MessageWrapper, String, Object>
       objectTranslator = (holder, sequence, type, object) -> {
@@ -60,7 +47,6 @@ public class CommandBus implements Bus {
   public void publish(String type, byte[] blob) {
     disruptor.getRingBuffer().publishEvent(blobTranslator, type, blob);
   }
-
 }
 
 

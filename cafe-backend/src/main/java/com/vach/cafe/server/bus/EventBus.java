@@ -1,4 +1,4 @@
-package com.vach.cafe.server.event.bus;
+package com.vach.cafe.server.bus;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
