@@ -7,8 +7,6 @@ import java.util.Map;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-import static com.vach.util.Util.cast;
-
 public class EventStreamManager {
 
   Map<Feed, PublishSubject> streamMap = new HashMap<>();

@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.vach.cafe.util.Validator.notNull;
+import lombok.NonNull;
+
 import static java.util.Arrays.asList;
 
 public class Tab extends Aggregate {
@@ -38,8 +39,7 @@ public class Tab extends Aggregate {
 
   private double servedItemsValue = 0;
 
-  public Tab(UUID id) {
-    assert notNull(id);
+  public Tab(@NonNull UUID id) {
     this.id = id;
   }
 

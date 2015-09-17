@@ -1,11 +1,13 @@
 package com.vach.cafe.server.command;
 
+import com.vach.cafe.server.Command;
+
 import java.util.List;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
 
-public class MarkDrinksServed extends com.vach.cafe.server.Command {
+public class MarkDrinksServed extends Command {
 
   public List<Integer> menuNumbers;
 

@@ -1,9 +1,13 @@
 Cafe project :
- ☐ Implement/test Java Fx client for application
-   ☐ Use websocket for communication
-   ☐ Use RxJava
-   ☐ Use Log4j2
- ☐ Implement/test CommandBus
- ☐ Implement/test EventBuss
- ☐ Implement/test business logic for Waiters
- ☐ Implement/test business logic for Chefs
+ ✔ Implement/test Java Fx client for application @done (15-09-10 12:15)
+ ☐ Implement Serializer/Deserializer for protobuf messages
+     ☐ Use first 8 bytes of the byte[] to detect target type 
+     ☐ Use an enum to map long to actual serializer/deserializer
+     ☐ Create a bean for handling serialization and deserialization logic
+     ☐ Use ThreadLocals to make it thread safe
+     ☐ Find out if ThreadLocal uses weakReference internally to avoid problems in the future
+ ☐ Separate Serializer and all data types to a shared project
+ ☐ Use client to send events to backend
+ ☐ Implement backend on demand troughout the workflow chain
+
+ 

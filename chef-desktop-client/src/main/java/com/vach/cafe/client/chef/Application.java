@@ -30,8 +30,6 @@ public class Application extends AbstractJavaFxApplicationSupport {
         stage.setResizable(true);
         stage.centerOnScreen();
         stage.show();
-
-
     }
 
     public static void main(String[] args) {

@@ -5,12 +5,6 @@ import java.io.Serializable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 
-/**
- * Date: 27.08.15 Time: 12:58
- *
- * @author Ruslan Molchanov (ruslanys@gmail.com)
- * @author http://mruslan.com
- */
 public class OrderEntry implements Serializable {
 
   private SimpleStringProperty tableId;
